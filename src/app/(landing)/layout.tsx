@@ -1,5 +1,5 @@
-import Footer from "./footer";
-import Header from "./header";
+import Footer from "@/app/(landing)/footer";
+import Header from "@/app/(landing)/header";
 
 type Props = {
     children: React.ReactNode;
@@ -7,7 +7,7 @@ type Props = {
 
 export default function MarketingLayout({ children }: Props) {
     return (
-        <section className="min-h-screen flex flex-col">
+        <section className="min-h-screen flex flex-col bg-slate-100">
             <Header />
             <main className="flex flex-1 justify-center items-center">
                 {children}

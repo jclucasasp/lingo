@@ -49,6 +49,5 @@ export default function Marketing() {
         </section>
       </ClerkLoaded>
     </section>
-
   );
 }

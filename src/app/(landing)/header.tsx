@@ -12,7 +12,7 @@ export default function Header() {
         </div>
         <ClerkLoaded>
           <SignedIn>
-            <UserButton afterSignOutUrl='/' />
+            <UserButton />
           </SignedIn>
           <SignedOut>
             <SignInButton>

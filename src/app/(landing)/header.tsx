@@ -12,7 +12,15 @@ export default function Header() {
         </div>
         <ClerkLoaded>
           <SignedIn>
-            <UserButton />
+          <UserButton showName afterSignOutUrl="/"
+                appearance={{
+                    elements: {
+                        userButtonBox: {
+                            flexDirection: "row-reverse",
+                        },
+                    },
+                }}
+            />
           </SignedIn>
           <SignedOut>
             <SignInButton>

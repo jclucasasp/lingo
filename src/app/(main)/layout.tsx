@@ -5,16 +5,14 @@ type LayoutProps = {
     children: React.ReactNode;
 }
 
-const seed = ["first", "second", "third", "fouth"];
-
 export default function Layout({ children }: LayoutProps) {
     return (
         <>
-        <MobileHeader />
-        <section className="flex h-screen">
-            <Sidebar classes="hidden md:flex md:flex-col" />
-            {children}
-        </section>
+            <MobileHeader />
+            <Sidebar classes="hidden lg:flex border-r-2 fixed" />
+            <section className="lg:ml-[300px]">
+                {children}
+            </section>
         </>
     );
 }

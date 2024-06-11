@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { ClerkLoaded, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import UserButtonWrapper from '@/components/userbutton-wrapper';
+import { ClerkLoaded, SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import Image from 'next/image';
 
 export default function Header() {
@@ -12,15 +13,7 @@ export default function Header() {
         </div>
         <ClerkLoaded>
           <SignedIn>
-          <UserButton showName afterSignOutUrl="/"
-                appearance={{
-                    elements: {
-                        userButtonBox: {
-                            flexDirection: "row-reverse",
-                        },
-                    },
-                }}
-            />
+          <UserButtonWrapper />
           </SignedIn>
           <SignedOut>
             <SignInButton>

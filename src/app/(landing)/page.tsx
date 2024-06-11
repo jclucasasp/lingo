@@ -25,21 +25,14 @@ export default function Marketing() {
             Learn, practice and master new languages with Lingo.
           </h1>
           <SignedOut>
-            
-            {/* To create a new account */}
-
             <SignUpButton mode="modal" forceRedirectUrl={"/learn"}>
               <Button size={"lg"} variant={"secondary"} >Get Started</Button>
             </SignUpButton>
-
-            {/* To log into your account */}
 
             <SignInButton mode="modal">
               <Button className="" size={"lg"} variant={"sec_outline"}>I already have an account</Button>
             </SignInButton>
           </SignedOut>
-
-          {/* Continue after signed in */}
 
           <SignedIn>
             <Button size={"lg"} variant={"secondary"} asChild>

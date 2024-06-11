@@ -31,7 +31,9 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Dependancies
 
-- [Clerk documentation](https://clerk.com/docs/upgrade-guides/core-2/nextjs)
+- [Clerk Auth](https://clerk.com/docs/upgrade-guides/core-2/nextjs)
+- [Neon Postgress Db](https://neon.tech)
+- [Drizzle ORM for Postgress](https://orm.drizzle.team/docs/get-started-postgresql)
 
 ## Deploy on Vercel
 

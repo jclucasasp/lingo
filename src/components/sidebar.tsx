@@ -21,7 +21,7 @@ export default function Sidebar({ classes }: SidebarProps) {
             <SidebarItem label="leaderboard" iconSrc="/leaderboard.svg" href="/leaderboard" />
             <SidebarItem label="quests" iconSrc="/quests.svg" href="/quests" />
             <SidebarItem label="shop" iconSrc="/shop.svg" href="/shop" />
-            <div className="ml-3">
+            <div className="ml-3 ">
                 <UserButton showName afterSignOutUrl="/"
                     appearance={{
                         elements: {

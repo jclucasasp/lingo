@@ -1,26 +1,26 @@
 "use client";
 
-import { courses } from "@/../db/schema";
+import { course, progress } from "@/../db/schema";
 import Card from "@/app/(main)/courses/card";
 
 type ListProps = {
-    courses: typeof courses.$inferInsert[],
-    activeCourseId: number,
+    course: typeof course.$inferInsert[],
+    activeCourseId?: typeof progress.$inferSelect["courseId"],
 }
 
-export default function ListItems({ courses, activeCourseId }: ListProps) {
+export default function ListItems({ course, activeCourseId }: ListProps) {
     return (
         <div className="pt-6 grid grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-4">
-            {courses.map((course, i) => {
+            {course.map((c, i) => {
                 return (
                     <Card
                         key={i}
-                        title={course.title}
-                        id={course.id!}
-                        imageSrc={course.imageSrc}
+                        title={c.title}
+                        id={c.id!}
+                        imageSrc={c.imageSrc}
                         onClick={() => {}}
                         disabled={false}
-                        active={activeCourseId === course.id ? true : false}
+                        active={activeCourseId === c.id ? true : false}
                     />
                 )
             })}

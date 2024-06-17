@@ -9,6 +9,7 @@ export const getCourses = cache(async () => {
     return await DBConn().query.courses.findMany();
 });
 
+/* Todo: Populate units and lessons once implemented */
 export const getCourseById = (async (id: number) => {
     return await DBConn().query.courses.findFirst({
         where: eq(courses.id, id),

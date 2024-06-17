@@ -7,9 +7,9 @@ import { redirect } from "next/navigation";
 
 export default async function Learn() {
 
-  const userProgressData = getUserProgress();
+  const userProgressPromise = getUserProgress();
 
-  const [userProgress] = await Promise.all([userProgressData]);
+  const [userProgress] = await Promise.all([userProgressPromise]);
 
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");

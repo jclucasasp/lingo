@@ -1,10 +1,11 @@
 "use client";
 
-import { courses, userProgress } from "@/../db/schema";
-import Card from "@/app/(main)/courses/card";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { courses, userProgress } from "@/../db/schema";
+import Card from "@/app/(main)/courses/card";
 import { upsertUserProgress } from "@/../actions/user-progress";
+import { toast } from "sonner";
 
 type ListProps = {
     course: typeof courses.$inferInsert[],
@@ -16,14 +17,16 @@ export default function ListItems({ course, activeCourseId }: ListProps) {
     const [pending, startTransition] = useTransition();
 
     const onMouseClick = (id: number) => {
-        if(pending) return;
+        if (pending) return;
 
-        if(id === activeCourseId) {
+        if (id === activeCourseId) {
             return router.push("/learn");
         }
 
         startTransition(() => {
-            upsertUserProgress(id);
+            upsertUserProgress(id).catch((err) => {
+                toast.error(err.message);
+            })
         });
     }
     return (
@@ -36,7 +39,7 @@ export default function ListItems({ course, activeCourseId }: ListProps) {
                         id={c.id!}
                         imageSrc={c.imageSrc}
                         onClick={onMouseClick}
-                        disabled={false}
+                        disabled={pending}
                         active={activeCourseId === c.id ? true : false}
                     />
                 )

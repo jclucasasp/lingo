@@ -2,10 +2,10 @@
 
 import { getCourseById, getUserProgress } from "@/../db/queries";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import DBConn from "@/../db/drizzle";
-import { userProgress, courses } from "@/../db/schema";
+import { userProgress } from "@/../db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import DBConn from "@/../db/drizzle";
 
 export const upsertUserProgress = async (courseId: number) => {
 
@@ -13,7 +13,7 @@ export const upsertUserProgress = async (courseId: number) => {
     const activeUser = await currentUser();
 
     if (!activeUser || !userId) {
-        throw new Error("Unauthorized");
+        throw new Error("No user found");
     }
 
     const course = await getCourseById(courseId);
@@ -31,7 +31,6 @@ export const upsertUserProgress = async (courseId: number) => {
 
     if (existingProgress) {
         await DBConn().update(userProgress).set({
-            userId: userId,
             activeCourseId: course.id,
             userName: activeUser.fullName || "User",
             imageSrc: activeUser.imageUrl || "/mascot.svg",

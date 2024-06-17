@@ -2,25 +2,29 @@ import { cache } from "react";
 import DBConn from "./drizzle";
 import { auth, } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { progress } from "./schema";
+import { courses, userProgress } from "./schema";
 
 
 export const getCourses = cache(async () => {
-    return await DBConn().query.course.findMany();
+    return await DBConn().query.courses.findMany();
+});
+
+export const getCourseById = (async (id: number) => {
+    return await DBConn().query.courses.findFirst({
+        where: eq(courses.id, id),
+    });
 });
 
 export const getUserProgress = cache(async () => {
     const { userId } = auth();
     console.log("UserID:", userId);
-    
+
     if (!userId) {
         return null;
     }
 
-    /*Todo: replace 0 with parseInteger(userId) */
-    
-    return await DBConn().query.progress.findFirst({
-        where: eq(progress.userId, 0),
+    return await DBConn().query.userProgress.findFirst({
+        where: eq(userProgress.userId, userId),
         with: {
             activeCourse: true,
         }

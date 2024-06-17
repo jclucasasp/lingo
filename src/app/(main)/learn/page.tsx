@@ -23,7 +23,6 @@ export default async function Learn() {
 
       <StickyWrapper>
         <UserProgress activeCourse={{ title: "Spanish", imageSrc: "/es.svg" }} hearts={5} points={100} hasActiveSubscription={false} />
-
       </StickyWrapper>
 
     </div>

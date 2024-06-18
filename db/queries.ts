@@ -18,7 +18,6 @@ export const getCourseById = (async (id: number) => {
 
 export const getUserProgress = cache(async () => {
     const { userId } = auth();
-    console.log("UserID:", userId);
 
     if (!userId) {
         return null;

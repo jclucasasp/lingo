@@ -34,18 +34,16 @@ export const upsertUserProgress = async (courseId: number) => {
             activeCourseId: course.id,
             userName: activeUser.fullName || "User",
             imageSrc: activeUser.imageUrl || "/mascot.svg",
-        })
-
-        Revalidate();
+        });
+    } else {
+        await DBConn().insert(userProgress).values({
+            userId,
+            activeCourseId: course.id,
+            userName: activeUser.fullName || "User",
+            imageSrc: activeUser.imageUrl || "/mascot.svg",
+        });
     }
-
-    await DBConn().insert(userProgress).values({
-        userId,
-        activeCourseId: course.id,
-        userName: activeUser.fullName || "User",
-        imageSrc: activeUser.imageUrl || "/mascot.svg",
-    });
-
+    
     Revalidate();
 }
 

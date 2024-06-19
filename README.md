@@ -35,6 +35,9 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 - [Neon Postgress Db](https://neon.tech)
 - [Drizzle ORM for Postgress](https://orm.drizzle.team/docs/get-started-postgresql)
 
+## Resources
+- [Github](https://github.com/AntonioErdeljac/lingo-early-access/blob/master/)
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

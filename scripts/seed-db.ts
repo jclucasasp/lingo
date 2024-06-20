@@ -68,49 +68,41 @@ async function seedDb() {
         {
             id: 1,
             title: "Nouns",
-            description: "Spanish Nouns",
             unitId: 1,
             order: 1
         }, {
             id: 2,
             title: "Verbs",
-            description: "Spanish Verbs",
             unitId: 1,
             order: 2
         }, {
             id: 3,
             title: "Nouns",
-            description: "French Nouns",
             unitId: 2,
             order: 1
         }, {
             id: 4,
             title: "Verbs",
-            description: "French Verbs",
             unitId: 2,
             order: 2
         }, {
             id: 5,
             title: "Nouns",
-            description: "Italian Nouns",
             unitId: 3,
             order: 1
         }, {
             id: 6,
             title: "Verbs",
-            description: "Italian Verbs",
             unitId: 3,
             order: 2
         }, {
             id: 7,
             title: "Nouns",
-            description: "Croatian Nouns",
             unitId: 4,
             order: 1
         }, {
             id: 8,
             title: "Verbs",
-            description: "Croatian Verbs",
             unitId: 4,
             order: 2
         }
@@ -126,21 +118,18 @@ async function seedDb() {
             type: "SELECT",
             order: 1,
             question: "Which one of these is a 'man'?",
-            answer: "El hombre"
         }, {
             id: 2,
             lessonId: 2,
             type: "ASSIST",
             order: 2,
             question: "What is the plural of 'man'?",
-            answer: "Hombres"
         }, {
             id: 3,
             lessonId: 3,
             type: "SELECT",
             order: 1,
             question: "Which one of these is a 'man'?",
-            answer: "L'homme"
 
         // }, {
         //     id: 4,
@@ -148,35 +137,30 @@ async function seedDb() {
         //     type: "ASSIST",
         //     order: 2,
         //     question: "What is the plural of 'man'?",
-        //     answer: "Hommes"
         // }, {
         //     id: 5,
         //     lessonId: 5,
         //     type: "SELECT",
         //     order: 1,
         //     question: "Which one of these is a 'man'?",
-        //     answer: "Il"        
         // }, {
         //     id: 6,
         //     lessonId: 6,
         //     type: "ASSIST",
         //     order: 2,
         //     question: "What is the plural of 'man'?",
-        //     answer: "Ils"   
         // }, {
         //     id: 7,
         //     lessonId: 7,
         //     type: "SELECT",
         //     order: 1,
         //     question: "Which one of these is a 'man'?",
-        //     answer: "čovjek"
         // }, {
         //     id: 8,
         //     lessonId: 8,
         //     type: "ASSIST",
         //     order: 2,
         //     question: "What is the plural of 'man'?",
-        //     answer: "čovjeka"
         }   
     ]).catch((e) => console.error("Failed to seed challenges: ", e.message));
 

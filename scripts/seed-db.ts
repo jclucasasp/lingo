@@ -78,34 +78,19 @@ async function seedDb() {
         }, {
             id: 3,
             title: "Nouns",
-            unitId: 2,
-            order: 1
+            unitId: 1,
+            order: 3
         }, {
             id: 4,
             title: "Verbs",
-            unitId: 2,
-            order: 2
+            unitId: 1,
+            order: 4
         }, {
             id: 5,
             title: "Nouns",
-            unitId: 3,
-            order: 1
-        }, {
-            id: 6,
-            title: "Verbs",
-            unitId: 3,
-            order: 2
-        }, {
-            id: 7,
-            title: "Nouns",
-            unitId: 4,
-            order: 1
-        }, {
-            id: 8,
-            title: "Verbs",
-            unitId: 4,
-            order: 2
-        }
+            unitId: 1,
+            order: 5
+        }, 
     ]).catch((e) => console.error("Failed to seed lessons: ", e.message));
 
 

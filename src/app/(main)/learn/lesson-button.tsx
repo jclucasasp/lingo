@@ -39,7 +39,7 @@ export default function LessonButton({ id, index, totalCount, locked, current, p
 
     const Icon = isCompleted ? Check : isLast ? Crown : Star;
 
-    const href = isCompleted ? `/learn/${id}` : "/learn";
+    const href = isCompleted ? `/lesson/${id}` : "/lesson";
 
     return (
         <Link href={href} aria-disabled={locked} style={{ pointerEvents: locked ? "none" : "auto" }}>

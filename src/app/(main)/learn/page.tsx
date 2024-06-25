@@ -33,7 +33,7 @@ export default async function Learn() {
               <UnitHeader title={unit.title} description={unit.description} />
 
               <div className="hidden xl:flex">
-                <Link href={`/learn/${unit.lessons[0].id}`}>
+                <Link href={`/lesson`}>
                   <Button variant={"default"} size={"default"}>
                     <NotebookIcon className="h-5 w-5 mr-2" />
                     continue
@@ -47,22 +47,13 @@ export default async function Learn() {
               const isCurrent = lesson.id === userProgress?.activeCourseId;
               const isLocked = !lesson.completed && !isCurrent || !userProgress.hearts || userProgress.hearts < 1; 
 
-              // console.log(`\nLesson ID[${lesson.id}]`);
-              // console.log(`Is Current: ${isCurrent}`);
-              // console.log(`Is Completed: ${lesson.completed}`);
-              // console.log(`Is Locked: ${isLocked}`);
-              // console.log("********************************");
-
-              // console.log(`Lesson Percentage: ${lessonPercentage}`);
-              // console.log(`CourseProgress: ${courseProgress}`);
-
               return(<LessonButton key={index} 
                 id={lesson.id} 
                 index={index} 
                 totalCount={unit.lessons.length - 1} 
                 locked={isLocked} 
                 current={isCurrent} 
-                percentage={0} />)
+                percentage={lessonPercentage} />)
             })}
             </div>
           </div>

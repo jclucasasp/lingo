@@ -9,7 +9,6 @@ export const getCourses = cache(async () => {
     return await DBConn().query.courses.findMany();
 });
 
-/* Todo: Populate units and lessons once implemented */
 export const getCourseById = (async (id: number) => {
     return await DBConn().query.courses.findFirst({
         where: eq(courses.id, id),
@@ -59,7 +58,7 @@ export const getUnits = cache(async () => {
     return unitsData.map((unit) => ({
         ...unit,
         lessons: unit.lessons.map((lesson) => ({
-            ...lesson,
+            ...lesson, 
             completed: lesson.challenges.every((challenge) => {
                 challenge.challengeProgress?.every((progress) => {
                     progress.completed
@@ -71,12 +70,8 @@ export const getUnits = cache(async () => {
 
 export const getCourseProgress = cache(async () => {
     const { userId } = auth();
-    if (!userId) {
-        return null;
-    }
-
     const userProgress = await getUserProgress();
-    if (!userProgress?.activeCourseId) {
+    if (!userId || !userProgress?.activeCourseId) {
         return null;
     }
 

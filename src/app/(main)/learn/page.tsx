@@ -5,7 +5,7 @@ import UserProgress from "@/components/user-progress";
 import UnitHeader from "@/app/(main)/learn/unit-header";
 import Link from "next/link";
 import LessonButton from "@/app/(main)/learn/lesson-button";
-import { getUnits, getUserProgress } from "@/../db/queries";
+import { getCourseProgress, getUnits, getUserProgress, getLessonPercentage } from "@/../db/queries";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { NotebookIcon } from "lucide-react";
@@ -14,8 +14,10 @@ export default async function Learn() {
 
   const userProgressPromise = getUserProgress();
   const unitsData = getUnits();
+  const courseProgressData = getCourseProgress();
+  const lessonPercentageData = getLessonPercentage();
 
-  const [userProgress, units] = await Promise.all([userProgressPromise, unitsData]);
+  const [userProgress, units, courseProgress, lessonPercentage] = await Promise.all([userProgressPromise, unitsData, courseProgressData, lessonPercentageData]);
 
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
@@ -45,11 +47,15 @@ export default async function Learn() {
               const isCurrent = lesson.id === userProgress?.activeCourseId;
               const isLocked = !lesson.completed && !isCurrent || !userProgress.hearts || userProgress.hearts < 1; 
 
-              console.log(`\nLesson ID[${lesson.id}]`);
-              console.log(`Is Current: ${isCurrent}`);
-              console.log(`Is Completed: ${lesson.completed}`);
-              console.log(`Is Locked: ${isLocked}`);
-              console.log("********************************");
+              // console.log(`\nLesson ID[${lesson.id}]`);
+              // console.log(`Is Current: ${isCurrent}`);
+              // console.log(`Is Completed: ${lesson.completed}`);
+              // console.log(`Is Locked: ${isLocked}`);
+              // console.log("********************************");
+
+              // console.log(`Lesson Percentage: ${lessonPercentage}`);
+              // console.log(`CourseProgress: ${courseProgress}`);
+
               return(<LessonButton key={index} 
                 id={lesson.id} 
                 index={index} 

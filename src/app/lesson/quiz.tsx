@@ -4,6 +4,7 @@ import { challengeOptions, challenges, challengeProgress } from "@/../db/schema"
 import { X, InfinityIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
+import { useExitModal } from "@/lib/utils";
 
 type QuizProps = {
     lessonId: number | undefined,
@@ -21,10 +22,11 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
   
     const [hearts, setHearts] = useState(initialHearts);
     const [percentage, setPercentage] = useState(initialPercentage);
+    const { onOpen } = useExitModal();
   
     return (
     <div className="lg:pt-[50px] pt-[20px] px-10 flex gap-x-7 items-center justify-between max-w-[1140px] mx-auto w-full">
-        <X onClick={()=>{}} /*Todo: add click to exit*/ className="text-slate-500 hover:opacity-75 transition cursor-pointer"/>
+        <X onClick={onOpen}  className="text-slate-500 hover:opacity-75 transition cursor-pointer"/>
             <Progress value={50 | percentage}/>
             <div className="text-rose-500 flex items-center font-bold">
                 <Image src={"/heart.svg"} alt="heart" height={28} width={28} className="mr-2" />

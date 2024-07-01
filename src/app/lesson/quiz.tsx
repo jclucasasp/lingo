@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { useExitModal } from "@/lib/utils";
 import { QuestionBubble } from "@/app/lesson/question-bubble";
+import { Challenge } from "./challenge";
 
 type QuizProps = {
     lessonId: number | undefined,
@@ -30,6 +31,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
     });
 
     const challenge = challenges![activeIndex!];
+    const challengeOptions = challenge.challengeOptions || [];
     const title = challenge.type === 'ASSIST' ? "Select the correct meaning" : challenge.question;
 
     const { onOpen } = useExitModal();
@@ -54,6 +56,8 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                         {challenge.type === 'ASSIST' && (
                             <QuestionBubble question={challenge.question} />
                         )}
+                        <Challenge options={challengeOptions} onSelect={()=> {}} status={"correct"} 
+                        selectedOption={null} disabled={false} type={challenge.type} />
                     </div>
                 </div>
             </div>

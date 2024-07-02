@@ -56,7 +56,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                         {challenge.type === 'ASSIST' && (
                             <QuestionBubble question={challenge.question} />
                         )}
-                        <Challenge options={challengeOptions} onSelect={()=> {}} status={"correct"} 
+                        <Challenge options={challengeOptions} onSelect={()=> {}} status={"none"} 
                         selectedOption={null} disabled={false} type={challenge.type} />
                     </div>
                 </div>

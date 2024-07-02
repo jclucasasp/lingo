@@ -24,15 +24,23 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
 
     const [hearts, setHearts] = useState(initialHearts);
     const [percentage, setPercentage] = useState(initialPercentage);
+    const [status, setStatus] = useState<"correct" | "incorrect" | "none">("none");
     const [challenges] = useState(lessonChallenges);
     const [activeIndex, setActiveIndex] = useState(() => {
         const activeChallenges = challenges?.findIndex((challenge) => !challenge.completed);
         return activeChallenges !== -1 ? activeChallenges : 0;
     });
 
+    const [selectedOption, setSelectedOption] = useState<number | null>();
     const challenge = challenges![activeIndex!];
     const challengeOptions = challenge.challengeOptions || [];
     const title = challenge.type === 'ASSIST' ? "Select the correct meaning" : challenge.question;
+
+    const onSelect = (id:number)=> {
+        setSelectedOption(id);
+        
+        if(status === "none") return;
+    }
 
     const { onOpen } = useExitModal();
 
@@ -56,8 +64,8 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                         {challenge.type === 'ASSIST' && (
                             <QuestionBubble question={challenge.question} />
                         )}
-                        <Challenge options={challengeOptions} onSelect={()=> {}} status={"none"} 
-                        selectedOption={null} disabled={false} type={challenge.type} />
+                        <Challenge options={challengeOptions} onSelect={onSelect} status={status} 
+                        selectedOption={selectedOption} disabled={false} type={challenge.type} />
                     </div>
                 </div>
             </div>

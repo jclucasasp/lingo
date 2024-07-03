@@ -12,7 +12,7 @@ type LessonCardProps = {
     selected?: boolean,
     onClick: () => void,
     shortcut: string,
-    status?: "correct" | "incorrect" | "none",
+    status?: "correct" | "incorrect" | "completed" | "none",
     disabled?: boolean
 }
 

@@ -3,8 +3,8 @@
 import { getCourseById, getUserProgress } from "@/../db/queries";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { userProgress } from "@/../db/schema";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Revalidate } from "@/lib/utils";
 import DBConn from "@/../db/drizzle";
 
 export const upsertUserProgress = async (courseId: number) => {
@@ -33,22 +33,17 @@ export const upsertUserProgress = async (courseId: number) => {
         await DBConn().update(userProgress).set({
             activeCourseId: course.id,
             userName: activeUser.fullName || "User",
-            imageSrc: activeUser.imageUrl || "/mascot.svg",
+            userImageSrc: activeUser.imageUrl || "/mascot.svg",
         });
     } else {
         await DBConn().insert(userProgress).values({
             userId,
             activeCourseId: course.id,
             userName: activeUser.fullName || "User",
-            imageSrc: activeUser.imageUrl || "/mascot.svg",
+            userImageSrc: activeUser.imageUrl || "/mascot.svg",
         });
     }
     
-    Revalidate();
-}
-
-function Revalidate() {
-    revalidatePath("/learn");
-    revalidatePath("/courses");
+    Revalidate(["/learn", "/courses"]);
     redirect("/learn");
 }

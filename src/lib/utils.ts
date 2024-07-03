@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
+import { revalidatePath } from "next/cache";
 import { twMerge } from "tailwind-merge"
-import { StoreApi, UseBoundStore, create } from "zustand";
+import { create } from "zustand";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -17,3 +18,9 @@ export const useExitModal = create<ExitModalState>((set) => ({
     onOpen: () => set({ isOpen: true }),
     onClose: () => set({ isOpen: false }),
 }));
+
+export function Revalidate(paths: string[]) {
+  paths.map((path) => {
+      revalidatePath(path);
+  });
+}

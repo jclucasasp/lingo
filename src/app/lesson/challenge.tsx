@@ -5,7 +5,7 @@ import { LessonCard } from "@/app/lesson/lesson-card";
 type ChallengeProps = {
     options: typeof challengeOptions.$inferSelect[],
     onSelect: (id:number)=> void,
-    status: "correct" | "incorrect" | "none",
+    status: "correct" | "incorrect" | "completed" | "none",
     selectedOption?: number | null,
     disabled: boolean,
     type: typeof challenges.$inferSelect["type"],

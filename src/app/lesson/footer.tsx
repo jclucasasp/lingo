@@ -18,7 +18,7 @@ export function LessonFooter({ onCheck, status, disabled, lessonId }: LessonFoot
     useKey("Enter", onCheck, {}, [onCheck]);
     
     return (
-        <footer className={cn("w-full h-[100px] border-t-2 absolute bottom-4", status === "correct" && "border-transparent, bg-green-100", status === "incorrect" && "border-transparent bg-rose-100")}>
+        <footer className={cn("w-full h-[100px] absolute -bottom-4", status === "correct" && "border-transparent, bg-green-100", status === "incorrect" && "border-transparent bg-rose-100")}>
             <div className="max-w-[1140px] h-full mx-auto flex items-center justify-between px-6 lg:px-10">
 
                 {status === "correct" && (

@@ -2,10 +2,11 @@
 
 import { getCourseById, getUserProgress } from "@/../db/queries";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { userProgress } from "@/../db/schema";
+import { challengeProgress, challenges, userProgress } from "@/../db/schema";
 import { redirect } from "next/navigation";
 import { Revalidate } from "@/lib/utils";
 import DBConn from "@/../db/drizzle";
+import { and, eq } from "drizzle-orm";
 
 export const upsertUserProgress = async (courseId: number) => {
 
@@ -43,7 +44,53 @@ export const upsertUserProgress = async (courseId: number) => {
             userImageSrc: activeUser.imageUrl || "/mascot.svg",
         });
     }
-    
+
     Revalidate(["/learn", "/courses"]);
     redirect("/learn");
+}
+// Todo: When you click to start a course and have not gotten any challenges correct, then there are no data in challenge_progress and when you get an incorrect answer, the program brakes. Fix is to populate challenge_progress as soon as you click on a language.
+export const reduceHearts = async (challengeId: number) => {
+    const { userId } = auth();
+    if (!userId) {
+        throw new Error("No user found");
+    }
+
+    const currentUserProgress = await getUserProgress();
+    if (!currentUserProgress) {
+        throw new Error("No user progress found");
+    }
+
+    const challenge = await DBConn().query.challenges.findFirst({
+        where: eq(challenges.id, challengeId),
+    }).catch((err) => console.error("Unable to find challenge: ", err.message));
+
+    if (!challenge) {
+        throw new Error("No challenge found");
+    }
+
+    const existingUserProgress = await DBConn().query.challengeProgress.findFirst({
+        where: and(
+            eq(challengeProgress.userId, userId),
+            eq(challengeProgress.challengeId, challengeId),
+        ),
+    }).catch((err)=> console.error("Unable to find existingUserProgress: ", err.message));
+
+    const isPractise = !!existingUserProgress;
+
+    if (isPractise) {
+        return { message: "practise"}
+    }
+
+    // Todo: handle subscription query here
+    if(!currentUserProgress.hearts){
+        return {error: "hearts"}
+    }
+
+    await DBConn().update(userProgress).set({
+        hearts: Math.max(currentUserProgress.hearts - 1, 0),
+    }).where(eq(userProgress.userId, userId))
+    .catch((err) => console.error("Unable to update users hearts: ", err.message))
+    .then(()=> console.log("User hearts updated"));
+
+    Revalidate(["/learn", "/quests", "/shop", "/leaderboard", `/lesson/${challenge.lessonId}`]);
 }

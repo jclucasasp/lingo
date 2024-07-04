@@ -10,6 +10,7 @@ import { LessonFooter } from "./footer";
 import Image from "next/image";
 import { upsertChallengeProgress } from "../../../actions/challenge-progress";
 import { toast } from "sonner";
+import { reduceHearts } from "@/../../actions/user-progress";
 
 type QuizProps = {
     lessonId: number | undefined,
@@ -55,7 +56,6 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
         if (status === "incorrect") {
             setStatus("none");
             setSelectedOption(null);
-            setHearts(hearts - 1);
             return;
         }
 
@@ -89,7 +89,19 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                     }).catch((err) => toast.error(err));
             })
         } else {
-            console.log("incorrect");
+            // Todo : Debug why hearts is not getting updated in the db
+            startTransition(() => {
+                reduceHearts(challenge.id)
+                .then((response)=> {
+                    if(response?.error === "hearts") {
+                        console.error("No more hearts left");
+                        return;
+                    }
+
+                    setStatus("incorrect");
+                    setHearts((prev) => Math.max(prev - 1, 0));
+                }).catch((err) => toast.error(err));
+            })
         }
     }
 
@@ -104,7 +116,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                 </div>
             </div>
 
-            <div className="h-full flex items-center justify-center lg:min-h-[350px] lg:w-[600px]">
+            <div className="relative h-full flex items-center justify-center lg:min-h-[350px] lg:w-[600px] mb-8">
                 <div className=" px-6 lg:px-0 flex flex-col gap-12">
                     <h3 className="font-bold text-lg lg:text-3xl text-center text-neutral-700 lg:text-start">
                         {title}
@@ -114,11 +126,11 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                             <QuestionBubble question={challenge.question} />
                         )}
                         <Challenge options={challengeOptions} onSelect={onSelect} status={status}
-                            selectedOption={selectedOption} disabled={false} type={challenge.type} />
+                            selectedOption={selectedOption} disabled={pending} type={challenge.type} />
                     </div>
                 </div>
             </div>
-            <LessonFooter disabled={!selectedOption} lessonId={lessonId} status={status} onCheck={onContinue} />
+            <LessonFooter disabled={pending || !selectedOption} lessonId={lessonId} status={status} onCheck={onContinue} />
         </div>
     );
 }

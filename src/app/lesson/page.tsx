@@ -1,4 +1,3 @@
-import React from 'react'
 import { getLesson, getUserProgress } from '@/../db/queries'
 import { redirect } from 'next/navigation';
 import Quiz from '@/app/lesson/quiz';

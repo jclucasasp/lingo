@@ -56,8 +56,9 @@ async function seedDb() {
         id: 3,
         unitId: 1, // Unit 1 (Learn the basics...)
         order: 3,
-        title: "Verbs",
-      }
+        title: "Adjetives",
+      },
+      
     ]),
     // Seeding Challenges
     DConn().insert(challenges).values([
@@ -73,14 +74,56 @@ async function seedDb() {
         lessonId: 1, // Nouns
         type: "ASSIST",
         order: 2,
-        question: 'Which one of these are a women',
+        question: 'Which one of these are a women?',
       },
       {
         id: 3,
         lessonId: 1, // Nouns
         type: "SELECT",
         order: 3,
-        question: 'Which one of these is the "the robot"?',
+        question: 'Which one of these are a robot?',
+      },
+      {
+        id: 4,
+        lessonId: 2, // Nouns
+        type: "SELECT",
+        order: 1,
+        question: 'Which one of these are a man"?',
+      },
+      {
+        id: 5,
+        lessonId: 2, // Nouns
+        type: "ASSIST",
+        order: 5,
+        question: 'Which one of these are a women?',
+      },
+      {
+        id: 6,
+        lessonId: 2, // Nouns
+        type: "SELECT",
+        order: 6,
+        question: 'Which one of these are a robot?',
+      },
+      {
+        id: 7,
+        lessonId: 3, // Nouns
+        type: "SELECT",
+        order: 7,
+        question: 'Which one of these are a man"?',
+      },
+      {
+        id: 8,
+        lessonId: 3, // Nouns
+        type: "ASSIST",
+        order: 8,
+        question: 'Which one of these are a women?',
+      },
+      {
+        id: 9,
+        lessonId: 3, // Nouns
+        type: "SELECT",
+        order: 9,
+        question: 'Which one of these are a robot?',
       },
     ]),
     // Seeding Challenge Options
@@ -143,6 +186,132 @@ async function seedDb() {
       },
       {
         challengeId: 3,
+        imageSrc: "/robot.svg",
+        correct: true,
+        text: "el robot",
+        audioSrc: "/es_robot.mp3",
+      },
+      {
+        challengeId: 4, // Which one of these is "a robot"?
+        imageSrc: "/man.svg",
+        correct: false,
+        text: "el hombre",
+        audioSrc: "/es_man.mp3",
+      },
+      {
+        challengeId: 4,
+        imageSrc: "/woman.svg",
+        correct: false,
+        text: "la mujer",
+        audioSrc: "/es_woman.mp3",
+      },
+      {
+        challengeId: 4,
+        imageSrc: "/robot.svg",
+        correct: true,
+        text: "el robot",
+        audioSrc: "/es_robot.mp3",
+      },
+      {
+        challengeId: 5, // Which one of these is "a robot"?
+        imageSrc: "/man.svg",
+        correct: false,
+        text: "el hombre",
+        audioSrc: "/es_man.mp3",
+      },
+      {
+        challengeId: 5,
+        imageSrc: "/woman.svg",
+        correct: false,
+        text: "la mujer",
+        audioSrc: "/es_woman.mp3",
+      },
+      {
+        challengeId: 5,
+        imageSrc: "/robot.svg",
+        correct: true,
+        text: "el robot",
+        audioSrc: "/es_robot.mp3",
+      },
+      {
+        challengeId: 6, // Which one of these is "a robot"?
+        imageSrc: "/man.svg",
+        correct: false,
+        text: "el hombre",
+        audioSrc: "/es_man.mp3",
+      },
+      {
+        challengeId: 6,
+        imageSrc: "/woman.svg",
+        correct: false,
+        text: "la mujer",
+        audioSrc: "/es_woman.mp3",
+      },
+      {
+        challengeId: 6,
+        imageSrc: "/robot.svg",
+        correct: true,
+        text: "el robot",
+        audioSrc: "/es_robot.mp3",
+      },
+      {
+        challengeId: 7, // Which one of these is "a robot"?
+        imageSrc: "/man.svg",
+        correct: false,
+        text: "el hombre",
+        audioSrc: "/es_man.mp3",
+      },
+      {
+        challengeId: 7,
+        imageSrc: "/woman.svg",
+        correct: false,
+        text: "la mujer",
+        audioSrc: "/es_woman.mp3",
+      },
+      {
+        challengeId: 7,
+        imageSrc: "/robot.svg",
+        correct: true,
+        text: "el robot",
+        audioSrc: "/es_robot.mp3",
+      },
+      {
+        challengeId: 8, // Which one of these is "a robot"?
+        imageSrc: "/man.svg",
+        correct: false,
+        text: "el hombre",
+        audioSrc: "/es_man.mp3",
+      },
+      {
+        challengeId: 8,
+        imageSrc: "/woman.svg",
+        correct: false,
+        text: "la mujer",
+        audioSrc: "/es_woman.mp3",
+      },
+      {
+        challengeId: 8,
+        imageSrc: "/robot.svg",
+        correct: true,
+        text: "el robot",
+        audioSrc: "/es_robot.mp3",
+      },
+      {
+        challengeId: 9, // Which one of these is "a robot"?
+        imageSrc: "/man.svg",
+        correct: false,
+        text: "el hombre",
+        audioSrc: "/es_man.mp3",
+      },
+      {
+        challengeId: 9,
+        imageSrc: "/woman.svg",
+        correct: false,
+        text: "la mujer",
+        audioSrc: "/es_woman.mp3",
+      },
+      {
+        challengeId: 9,
         imageSrc: "/robot.svg",
         correct: true,
         text: "el robot",

@@ -1,8 +1,8 @@
+import { challengeProgress, courses, lessons, units, userProgress } from "@/../db/schema";
 import { cache } from "react";
-import DBConn from "./drizzle";
+import DBConn from "@/../db/drizzle";
 import { auth, } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { challengeProgress, courses, lessons, units, userProgress } from "./schema";
 
 
 export const getCourses = cache(async () => {
@@ -53,7 +53,11 @@ export const getUnits = cache(async () => {
                 }
             }
         }
-    });
+    }).catch((err) => console.error(err));
+
+    if (!unitsData) {
+        return [];
+    }
 
     return unitsData.map((unit) => ({
         ...unit,
@@ -93,7 +97,11 @@ export const getCourseProgress = cache(async () => {
                 }
             }
         }
-    });
+    }).catch((err) => console.error(err));
+
+    if (!activeCourseUnits) {
+        return null;
+    }
 
     const firstUncompletedLesson = activeCourseUnits
         .flatMap((unit) => unit.lessons).find((lesson) => {
@@ -113,7 +121,12 @@ export const getLesson = cache(async (id?: number) => {
     }
 
     const courseProgress = await getCourseProgress();
-    const lessonId = id || courseProgress?.activeLesson?.id;
+
+    if(!courseProgress || !courseProgress.activeLessonId) {
+        return null;
+    }
+
+    const lessonId = id || courseProgress.activeLessonId;
 
     if (!lessonId) {
         return null;
@@ -132,9 +145,13 @@ export const getLesson = cache(async (id?: number) => {
                 }
             }
         }
-    });
+    }).catch((err) => console.error(err));
 
-    const normalisedChallenges = data?.challenges.map((challenge) => {
+    if (!data) {
+        return null;
+    }
+
+    const normalisedChallenges = data.challenges.map((challenge) => {
         const completed = challenge.challengeProgress && challenge.challengeProgress.length > 0 && challenge.challengeProgress.every((progress) => progress.completed);
         return { ...challenge, completed };
     });

@@ -1,5 +1,4 @@
 "use server";
-
 import { auth } from "@clerk/nextjs/server";
 import { getUserProgress } from "@/../db/queries";
 import { challengeProgress, challenges, userProgress } from "@/../db/schema";
@@ -36,13 +35,14 @@ export async function upsertChallengeProgress(challengeId: number) {
         ),
     });
 
-    const isPractise = !!existingProgress;
+    const isPractise = existingProgress?.completed;
 
     if (currentUserProgress.hearts == 0 && !isPractise) {
         return { error: "hearts" };
     }
 
     if (isPractise) {
+        console.log("Practise session, increasing hearts...");
         await DBConn().batch([
             DBConn().update(challengeProgress).set({
                 completed: true,
@@ -52,7 +52,8 @@ export async function upsertChallengeProgress(challengeId: number) {
                 hearts: Math.min(currentUserProgress.hearts + 1, 5),
                 points: currentUserProgress.points + 10,
             }).where(eq(userProgress.userId, userId)),
-        ]);
+        ]).catch((err) => console.error(err))
+        .finally(()=> console.log("Hearts increased and challenge set to completed"))
 
         Revalidate(["/learn", "/courses", "/quests", "/leaderboard", `/lesson/${challenge.lessonId}`]);
         return;
@@ -68,7 +69,7 @@ export async function upsertChallengeProgress(challengeId: number) {
         DBConn().update(userProgress).set({
             points: currentUserProgress.points + 10,
         }).where(eq(userProgress.userId, userId))
-    ]);
+    ]).catch((err) => console.error(err));
 
     Revalidate(["/learn", "/courses", "/quests", "/leaderboard", `/lesson/${challenge.lessonId}`]);
 }

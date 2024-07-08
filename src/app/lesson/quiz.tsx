@@ -5,12 +5,13 @@ import { X, InfinityIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useExitModal } from "@/lib/utils";
 import { QuestionBubble } from "@/app/lesson/question-bubble";
-import { Challenge } from "./challenge";
-import { LessonFooter } from "./footer";
-import Image from "next/image";
-import { upsertChallengeProgress } from "../../../actions/challenge-progress";
-import { toast } from "sonner";
+import { Challenge } from "@/app/lesson/challenge";
+import { LessonFooter } from "@/app/lesson/footer";
+import { upsertChallengeProgress } from "@/../../actions/challenge-progress";
 import { reduceHearts } from "@/../../actions/user-progress";
+import { toast } from "sonner";
+import Image from "next/image";
+import { useAudio } from "react-use";
 
 type QuizProps = {
     lessonId: number | undefined,
@@ -26,6 +27,8 @@ type QuizProps = {
 
 export default function Quiz({ lessonId, initialHearts, initialPercentage, userSubscription, lessonChallenges }: QuizProps) {
 
+    const [correctAudio, _c, correctControls] = useAudio({src: "/correct.wav"});
+    const [incorrectAudio, _i, incorrectControls] = useAudio({src: "/incorrect.wav"});
     const [pending, startTransition] = useTransition();
     const [hearts, setHearts] = useState(initialHearts);
     const [percentage, setPercentage] = useState(initialPercentage);
@@ -63,7 +66,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
             setActiveIndex((current) => current! + 1);
             setStatus("none");
             setSelectedOption(null);
-            setPercentage(percentage + 100);
+            setPercentage(percentage * 100);
             return;
         }
 
@@ -80,6 +83,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                             return console.error("No more hearts left");
                         }
                         setStatus("correct");
+                        correctControls.play();
                         setPercentage((prev) => prev + 100 / challenges!?.length);
 
                         // Check if this is a completed lesson which means that the user is in practise mode
@@ -89,20 +93,30 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                     }).catch((err) => toast.error(err));
             })
         } else {
-            // Todo : Debug why hearts is not getting updated in the db
             startTransition(() => {
                 reduceHearts(challenge.id)
-                .then((response)=> {
-                    if(response?.error === "hearts") {
-                        console.error("No more hearts left");
-                        return;
-                    }
+                    .then((response) => {
+                        if (response?.error === "hearts") {
+                            return;
+                        }
 
-                    setStatus("incorrect");
-                    setHearts((prev) => Math.max(prev - 1, 0));
-                }).catch((err) => toast.error(err));
+                        setStatus("incorrect");
+                        incorrectControls.play();
+                        setHearts((prev) => Math.max(prev - 1, 0));
+                    }).catch((err) => toast.error(err));
             })
         }
+    }
+
+    if(!challenge || !challengeOptions) {
+        return (
+            <>
+            <div className="flex items-center justify-center">
+                <Image src={"/finish.svg"} height={100} width={100} alt="completed" />
+                <h3 className="text-2xl font-bold lg:text-3xl">You completed this course!</h3>
+            </div>
+            </>
+        )
     }
 
     return (
@@ -117,6 +131,8 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
             </div>
 
             <div className="relative h-full flex items-center justify-center lg:min-h-[350px] lg:w-[600px] mb-8">
+                {correctAudio}
+                {incorrectAudio}
                 <div className=" px-6 lg:px-0 flex flex-col gap-12">
                     <h3 className="font-bold text-lg lg:text-3xl text-center text-neutral-700 lg:text-start">
                         {title}

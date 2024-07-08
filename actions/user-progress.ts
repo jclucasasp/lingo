@@ -1,11 +1,10 @@
 "use server";
-
 import { getCourseById, getUserProgress } from "@/../db/queries";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { challengeProgress, challenges, userProgress } from "@/../db/schema";
-import { redirect } from "next/navigation";
 import { Revalidate } from "@/lib/utils";
 import DBConn from "@/../db/drizzle";
+import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 
 export const upsertUserProgress = async (courseId: number) => {
@@ -35,14 +34,14 @@ export const upsertUserProgress = async (courseId: number) => {
             activeCourseId: course.id,
             userName: activeUser.fullName || "User",
             userImageSrc: activeUser.imageUrl || "/mascot.svg",
-        });
+        }).catch((err) => console.error(err));
     } else {
         await DBConn().insert(userProgress).values({
             userId,
             activeCourseId: course.id,
             userName: activeUser.fullName || "User",
             userImageSrc: activeUser.imageUrl || "/mascot.svg",
-        });
+        }).catch((err) => console.error(err));
     }
 
     Revalidate(["/learn", "/courses"]);
@@ -73,24 +72,22 @@ export const reduceHearts = async (challengeId: number) => {
             eq(challengeProgress.userId, userId),
             eq(challengeProgress.challengeId, challengeId),
         ),
-    }).catch((err)=> console.error("Unable to find existingUserProgress: ", err.message));
+    }).catch((err) => console.error("Unable to find existingUserProgress: ", err.message));
 
-    const isPractise = !!existingUserProgress;
-
-    if (isPractise) {
-        return { message: "practise"}
+    if (existingUserProgress && existingUserProgress.completed) {
+        return { message: "practise" }
     }
 
     // Todo: handle subscription query here
-    if(!currentUserProgress.hearts){
-        return {error: "hearts"}
+    if (!currentUserProgress.hearts) {
+        return { error: "hearts" }
     }
 
     await DBConn().update(userProgress).set({
         hearts: Math.max(currentUserProgress.hearts - 1, 0),
     }).where(eq(userProgress.userId, userId))
-    .catch((err) => console.error("Unable to update users hearts: ", err.message))
-    .then(()=> console.log("User hearts updated"));
+        .catch((err) => console.error("Unable to update users hearts: ", err.message))
+        .then(() => console.log("User hearts decreased"));
 
     Revalidate(["/learn", "/quests", "/shop", "/leaderboard", `/lesson/${challenge.lessonId}`]);
 }

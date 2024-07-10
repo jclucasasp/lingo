@@ -58,6 +58,18 @@ async function seedDb() {
         order: 3,
         title: "Adjetives",
       },
+      {
+        id: 4,
+        unitId: 1, // Unit 1 (Learn the basics...)
+        order: 4,
+        title: "Phrases",
+      },
+      {
+        id: 5,
+        unitId: 1, // Unit 1 (Learn the basics...)
+        order: 5,
+        title: "Sentences",
+      },
       
     ]),
     // Seeding Challenges
@@ -67,69 +79,48 @@ async function seedDb() {
         lessonId: 1, // Nouns
         type: "SELECT",
         order: 1,
-        question: 'Which one of these are a man"?',
+        question: 'Which one of these is the "a man"?',
       },
       {
         id: 2,
         lessonId: 1, // Nouns
         type: "ASSIST",
         order: 2,
-        question: 'Which one of these are a women?',
+        question: '"a man"',
       },
       {
         id: 3,
         lessonId: 1, // Nouns
         type: "SELECT",
         order: 3,
-        question: 'Which one of these are a robot?',
+        question: 'Which one of these is the "a robot"?',
       },
       {
         id: 4,
-        lessonId: 2, // Nouns
+        lessonId: 2, // Verbs
         type: "SELECT",
         order: 1,
-        question: 'Which one of these are a man"?',
+        question: 'Which one of these is the "the man"?',
       },
       {
         id: 5,
-        lessonId: 2, // Nouns
+        lessonId: 2, // Verbs
         type: "ASSIST",
-        order: 5,
-        question: 'Which one of these are a women?',
+        order: 2,
+        question: '"the man"',
       },
       {
         id: 6,
-        lessonId: 2, // Nouns
+        lessonId: 2, // Verbs
         type: "SELECT",
-        order: 6,
-        question: 'Which one of these are a robot?',
-      },
-      {
-        id: 7,
-        lessonId: 3, // Nouns
-        type: "SELECT",
-        order: 7,
-        question: 'Which one of these are a man"?',
-      },
-      {
-        id: 8,
-        lessonId: 3, // Nouns
-        type: "ASSIST",
-        order: 8,
-        question: 'Which one of these are a women?',
-      },
-      {
-        id: 9,
-        lessonId: 3, // Nouns
-        type: "SELECT",
-        order: 9,
-        question: 'Which one of these are a robot?',
+        order: 3,
+        question: 'Which one of these is the "the robot"?',
       },
     ]),
     // Seeding Challenge Options
     DConn().insert(challengeOptions).values([
       {
-        challengeId: 1, // Which one of these are a man"?
+        challengeId: 1, // Which one of these is "a man"?
         imageSrc: "/man.svg",
         correct: true,
         text: "el hombre",
@@ -150,33 +141,31 @@ async function seedDb() {
         audioSrc: "/es_robot.mp3",
       },
       {
-        challengeId: 2, // "Which one of these are a women"?
-        imageSrc: "/man.svg",
-        correct: false,
+        challengeId: 2, // "a man"?
+        correct: true,
         text: "el hombre",
         audioSrc: "/es_man.mp3",
       },
       {
         challengeId: 2,
-        imageSrc: "/woman.svg",
-        correct: true,
+        correct: false,
         text: "la mujer",
         audioSrc: "/es_woman.mp3",
       },
       {
         challengeId: 2,
-        imageSrc: "/robot.svg",
         correct: false,
         text: "el robot",
         audioSrc: "/es_robot.mp3",
       },
       {
-        challengeId: 3, // Which one of these is "a robot"?
+        challengeId: 3, // Which one of these is the "a robot"?
         imageSrc: "/man.svg",
         correct: false,
         text: "el hombre",
         audioSrc: "/es_man.mp3",
       },
+  
       {
         challengeId: 3,
         imageSrc: "/woman.svg",
@@ -191,132 +180,7 @@ async function seedDb() {
         text: "el robot",
         audioSrc: "/es_robot.mp3",
       },
-      {
-        challengeId: 4, // Which one of these is "a robot"?
-        imageSrc: "/man.svg",
-        correct: false,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 4,
-        imageSrc: "/woman.svg",
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 4,
-        imageSrc: "/robot.svg",
-        correct: true,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
-      {
-        challengeId: 5, // Which one of these is "a robot"?
-        imageSrc: "/man.svg",
-        correct: false,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 5,
-        imageSrc: "/woman.svg",
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 5,
-        imageSrc: "/robot.svg",
-        correct: true,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
-      {
-        challengeId: 6, // Which one of these is "a robot"?
-        imageSrc: "/man.svg",
-        correct: false,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 6,
-        imageSrc: "/woman.svg",
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 6,
-        imageSrc: "/robot.svg",
-        correct: true,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
-      {
-        challengeId: 7, // Which one of these is "a robot"?
-        imageSrc: "/man.svg",
-        correct: false,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 7,
-        imageSrc: "/woman.svg",
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 7,
-        imageSrc: "/robot.svg",
-        correct: true,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
-      {
-        challengeId: 8, // Which one of these is "a robot"?
-        imageSrc: "/man.svg",
-        correct: false,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 8,
-        imageSrc: "/woman.svg",
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 8,
-        imageSrc: "/robot.svg",
-        correct: true,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
-      {
-        challengeId: 9, // Which one of these is "a robot"?
-        imageSrc: "/man.svg",
-        correct: false,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 9,
-        imageSrc: "/woman.svg",
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 9,
-        imageSrc: "/robot.svg",
-        correct: true,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
+      
     ])
   ]).catch((err) => {
     console.log("Unable to seed db:", err);

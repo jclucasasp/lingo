@@ -55,7 +55,7 @@ export async function upsertChallengeProgress(challengeId: number) {
         ]).catch((err) => console.error(err))
         .finally(()=> console.log("Hearts increased and challenge set to completed"))
 
-        Revalidate(["/learn", "/courses", "/quests", "/leaderboard", `/lesson/${challenge.lessonId}`]);
+        Revalidate(["/learn", "/lesson", "/courses", "/quests", "/leaderboard", `/lesson/${challenge.lessonId}`]);
         return;
     }
 

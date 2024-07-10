@@ -15,6 +15,7 @@ import { ResultCard } from "@/app/lesson/result-card";
 import { useRouter } from "next/navigation";
 import Confetti from "react-confetti";
 import Image from "next/image";
+import { integer } from "drizzle-orm/pg-core";
 
 type QuizProps = {
     lessonId: number | undefined,
@@ -37,15 +38,18 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
     const [hearts, setHearts] = useState(initialHearts);
     const [percentage, setPercentage] = useState(initialPercentage);
     const [status, setStatus] = useState<"correct" | "incorrect" | "completed" | "none">("none");
-    const [challenges] = useState(lessonChallenges);
+    // const [challenges] = useState(lessonChallenges);
     const [activeIndex, setActiveIndex] = useState(() => {
-        const activeChallenges = challenges?.findIndex((challenge) => !challenge.completed);
+        const activeChallenges = lessonChallenges?.findIndex((challenge) => !challenge.completed);
+        console.log("ActiveChallenges index", activeChallenges);
         return activeChallenges !== -1 ? activeChallenges : 0;
     });
 
     const [selectedOption, setSelectedOption] = useState<number | null>();
     const router = useRouter();
-    const challenge = challenges![activeIndex!];
+    const challenge = lessonChallenges![activeIndex!];
+    console.log(`Challenge length: ${lessonChallenges?.length}. ActiveIndex: ${activeIndex}`);
+
     const challengeOptions = challenge.challengeOptions || [];
     const title = challenge.type === 'ASSIST' ? "Select the correct meaning" : challenge.question;
 
@@ -71,7 +75,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
             setActiveIndex((current) => current! + 1);
             setStatus("none");
             setSelectedOption(null);
-            setPercentage(percentage * 100);
+            // setPercentage(percentage);
             return;
         }
 
@@ -89,7 +93,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                         }
                         setStatus("correct");
                         correctControls.play();
-                        setPercentage((prev) => prev + 100 / challenges!?.length);
+                        setPercentage((prev) => prev + 100 / lessonChallenges!.length);
 
                         // Check if this is a completed lesson which means that the user is in practise mode
                         if (initialPercentage == 100) {
@@ -113,7 +117,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
         }
     }
 
-    if (!challenge) {
+    if  (lessonChallenges?.length === activeIndex || !challenge) {
         return (
             <>
             {finshedAutio}
@@ -123,7 +127,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
                 <h3 className="text-2xl font-bold lg:text-3xl">You completed this course!</h3>
 
                 <div className="flex gap-4">
-                    <ResultCard variant="points" value={challenges!.length * 10} />
+                    <ResultCard variant="points" value={lessonChallenges!.length * 10} />
                     <ResultCard variant="hearts" value={hearts} />
                 </div>
             </div>
@@ -136,7 +140,7 @@ export default function Quiz({ lessonId, initialHearts, initialPercentage, userS
         <div className="flex flex-col items-center">
             <div className="lg:pt-[50px] pt-[20px] px-10 flex gap-x-7 justify-between max-w-[1140px] w-full">
                 <X onClick={onOpen} className="text-slate-500 hover:opacity-75 transition cursor-pointer" />
-                <Progress value={50 | percentage} />
+                <Progress value={percentage} />
                 <div className="text-rose-500 flex items-center font-bold">
                     <Image src={"/heart.svg"} alt="heart" height={28} width={28} className="mr-2" />
                     {userSubscription ? <InfinityIcon className="h-6 w-6 stroke-[3]" /> : hearts}

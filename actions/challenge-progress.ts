@@ -35,7 +35,13 @@ export async function upsertChallengeProgress(challengeId: number) {
         ),
     });
 
+    // if (!existingProgress) {
+    //     // throw new Error("No challenge progress found");
+    //     return;
+    // }
+
     const isPractise = existingProgress?.completed;
+    console.log("isPractise: ", isPractise);
 
     if (currentUserProgress.hearts == 0 && !isPractise) {
         return { error: "hearts" };

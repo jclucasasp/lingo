@@ -1,4 +1,4 @@
-import { getLesson, getUserProgress } from '@/../db/queries'
+import { getLesson, getUserProgress, getLessonPercentage } from '@/../db/queries'
 import { redirect } from 'next/navigation';
 import Quiz from '@/app/lesson/quiz';
 import '@/app/lesson/layout';
@@ -6,6 +6,7 @@ import '@/app/lesson/layout';
 export default async function LessonPage() {
     const lessonData = getLesson();
     const userProgressData = getUserProgress();
+    const percentageData = getLessonPercentage();
 
     const [lesson, userProgress] = await Promise.all([lessonData, userProgressData]);
 
@@ -13,6 +14,7 @@ export default async function LessonPage() {
         redirect("/learn");
     }
 
+    //Todo: Test if percentageData yields the same as the below calculation
     const percentage = lesson.challenges!.filter((challenge) => challenge.completed).length / lesson.challenges!.length * 100;
 
     return (
@@ -20,7 +22,7 @@ export default async function LessonPage() {
             lessonId={lesson.id}
             lessonChallenges={lesson.challenges}
             initialHearts={userProgress.hearts}
-            initialPercentage={percentage}
+            initialPercentage={Math.round(percentage)}
             userSubscription={null}>
         </Quiz>
     )

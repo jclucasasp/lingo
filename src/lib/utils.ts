@@ -7,16 +7,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-type ExitModalState = {
+type CustomModalState = {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
 };
 
-export const useExitModal = create<ExitModalState>((set) => ({
+export const useExitModal = create<CustomModalState>((set) => ({
     isOpen: false,
     onOpen: () => set({ isOpen: true }),
     onClose: () => set({ isOpen: false }),
+}));
+
+export const useHeartModal = create<CustomModalState>((set) => ({
+  isOpen: false,
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
 }));
 
 export function Revalidate(paths: string[]) {

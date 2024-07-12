@@ -40,7 +40,7 @@ export async function upsertChallengeProgress(challengeId: number) {
     //     return;
     // }
 
-    const isPractise = existingProgress?.completed;
+    const isPractise = existingProgress?.completed || false;
     console.log("isPractise: ", isPractise);
 
     if (currentUserProgress.hearts == 0 && !isPractise) {
@@ -52,7 +52,7 @@ export async function upsertChallengeProgress(challengeId: number) {
         await DBConn().batch([
             DBConn().update(challengeProgress).set({
                 completed: true,
-            }).where(eq(challengeProgress.id, existingProgress.id)),
+            }).where(eq(challengeProgress.id, existingProgress!.id)),
 
             DBConn().update(userProgress).set({
                 hearts: Math.min(currentUserProgress.hearts + 1, 5),

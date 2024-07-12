@@ -44,8 +44,8 @@ export default async function Learn() {
             </div>
             <div className="flex flex-col items-center gap-4 relative">
             {unit.lessons.map((lesson, index)=> {
-              const isCurrent = lesson.id === userProgress?.activeCourseId;
-              const isLocked = !lesson.completed && !isCurrent || !userProgress.hearts || userProgress.hearts < 1; 
+              const isCurrent = lesson.id === userProgress?.activeCourseId || false;
+              const isLocked = !!lesson.completed && !isCurrent || !userProgress.hearts || userProgress.hearts < 1; 
 
               return(<LessonButton key={index} 
                 id={lesson.id} 

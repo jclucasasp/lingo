@@ -4,7 +4,6 @@ import DBConn from "@/../db/drizzle";
 import { auth, } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
-
 export const getCourses = cache(async () => {
     return await DBConn().query.courses.findMany();
 });
@@ -58,13 +57,13 @@ export const getUnits = cache(async () => {
     if (!unitsData) {
         return [];
     }
-
+    // Todo: if the program brakes, change .filter to .every
     return unitsData.map((unit) => ({
         ...unit,
         lessons: unit.lessons.map((lesson) => ({
             ...lesson, 
             completed: lesson.challenges.every((challenge) => {
-                challenge.challengeProgress?.every((progress) => {
+                challenge.challengeProgress?.filter((progress) => {
                     progress.completed
                 })
             })
@@ -75,6 +74,7 @@ export const getUnits = cache(async () => {
 export const getCourseProgress = cache(async () => {
     const { userId } = auth();
     const userProgress = await getUserProgress();
+
     if (!userId || !userProgress?.activeCourseId) {
         return null;
     }
@@ -115,6 +115,8 @@ export const getCourseProgress = cache(async () => {
 });
 
 export const getLesson = cache(async (id?: number) => {
+    console.log("Getting lesson: ", id);
+
     const { userId } = auth();
     if (!userId) {
         return null;
@@ -122,7 +124,7 @@ export const getLesson = cache(async (id?: number) => {
 
     const courseProgress = await getCourseProgress();
 
-    if(!courseProgress || !courseProgress.activeLessonId) {
+    if(!courseProgress || !courseProgress.activeLesson) {
         return null;
     }
 
@@ -132,7 +134,7 @@ export const getLesson = cache(async (id?: number) => {
         return null;
     }
 
-    const data = await DBConn().query.lessons.findFirst({
+    const lessonData = await DBConn().query.lessons.findFirst({
         where: eq(lessons.id, lessonId),
         with: {
             challenges: {
@@ -147,17 +149,17 @@ export const getLesson = cache(async (id?: number) => {
         }
     }).catch((err) => console.error(err));
 
-    if (!data) {
+    if (!lessonData) {
         return null;
     }
 
-    const normalisedChallenges = data.challenges.map((challenge) => {
+    const normalisedChallenges = lessonData.challenges.map((challenge) => {
         const completed = challenge.challengeProgress && challenge.challengeProgress.length > 0 && challenge.challengeProgress.every((progress) => progress.completed);
         return { ...challenge, completed };
     });
 
     return {
-        ...data, challenges: normalisedChallenges
+        ...lessonData, challenges: normalisedChallenges
     }
 });
 

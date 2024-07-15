@@ -3,21 +3,22 @@ import FeedWrapper from "@/components/feed-wrapper";
 import StickyWrapper from "@/components/sticky-wrapper";
 import UserProgress from "@/components/user-progress";
 import UnitHeader from "@/app/(main)/learn/unit-header";
-import Link from "next/link";
 import LessonButton from "@/app/(main)/learn/lesson-button";
 import { getCourseProgress, getUnits, getUserProgress, getLessonPercentage } from "@/../db/queries";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { NotebookIcon } from "lucide-react";
+import Link from "next/link";
+import { json } from "stream/consumers";
 
 export default async function Learn() {
 
-  const userProgressPromise = getUserProgress();
+  const userProgressData = getUserProgress();
   const unitsData = getUnits();
   const courseProgressData = getCourseProgress();
   const lessonPercentageData = getLessonPercentage();
 
-  const [userProgress, units, courseProgress, lessonPercentage] = await Promise.all([userProgressPromise, unitsData, courseProgressData, lessonPercentageData]);
+  const [userProgress, units, courseProgress, lessonPercentage] = await Promise.all([userProgressData, unitsData, courseProgressData, lessonPercentageData]);
 
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
@@ -44,8 +45,10 @@ export default async function Learn() {
             </div>
             <div className="flex flex-col items-center gap-4 relative">
             {unit.lessons.map((lesson, index)=> {
-              const isCurrent = lesson.id === userProgress?.activeCourseId || false;
-              const isLocked = !!lesson.completed && !isCurrent || !userProgress.hearts || userProgress.hearts < 1; 
+              const isCurrent = lesson.id ===  userProgress?.activeCourseId;
+              const heartsBool = (!!userProgress.hearts && userProgress.hearts > 0);
+              const isLocked = !isCurrent || !heartsBool; 
+              // const isLocked = !!lesson.completed && !isCurrent || !heartsBool; 
 
               return(<LessonButton key={index} 
                 id={lesson.id} 

@@ -35,11 +35,6 @@ export async function upsertChallengeProgress(challengeId: number) {
         ),
     });
 
-    // if (!existingProgress) {
-    //     // throw new Error("No challenge progress found");
-    //     return;
-    // }
-
     const isPractise = existingProgress?.completed || false;
     console.log("isPractise: ", isPractise);
 
@@ -77,5 +72,5 @@ export async function upsertChallengeProgress(challengeId: number) {
         }).where(eq(userProgress.userId, userId))
     ]).catch((err) => console.error(err));
 
-    Revalidate(["/learn", "/courses", "/quests", "/leaderboard", `/lesson/${challenge.lessonId}`]);
+    Revalidate(["/learn", "/lesson", "/courses", "/quests", "/leaderboard", `/lesson/${challenge.lessonId}`]);
 }

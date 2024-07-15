@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 
 export const upsertUserProgress = async (courseId: number) => {
-
+    console.log("\nUpserting user progress for course: ", courseId);
     const { userId } = auth();
     const activeUser = await currentUser();
 

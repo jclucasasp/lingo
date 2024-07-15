@@ -15,7 +15,7 @@ export function LessonFooter({ onCheck, status, disabled, lessonId }: LessonFoot
     
     const router = useRouter();
     const isMobile = useMedia("(max-width: 1024x)");
-    useKey("Enter", onCheck, {}, [onCheck]);
+    useKey("enter", onCheck, {}, [onCheck]);
     
     return (
         <footer className={cn("w-full h-[100px] absolute -bottom-2 border-t-2", status === "correct" && "border-transparent, bg-green-100", status === "incorrect" && "border-transparent bg-rose-100")}>

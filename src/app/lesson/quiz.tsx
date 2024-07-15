@@ -77,7 +77,9 @@ export default function Quiz({
         }
 
         const correctOption = challengeOptions.find((option) => option.correct);
-        if (!correctOption) return;
+        if (!correctOption) {
+            return;
+        }
 
         if (correctOption.id === selectedOption) {
             startTransition(() => {
@@ -115,7 +117,7 @@ export default function Quiz({
         }
     };
 
-    if (percentage === 100 || !challenge) {
+    if (!challenge) {
         return (
             <>
                 {finishAudio}

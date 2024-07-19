@@ -25,6 +25,12 @@ export const useHeartModal = create<CustomModalState>((set) => ({
   onClose: () => set({ isOpen: false }),
 }));
 
+export const usePractiseModal = create<CustomModalState>((set) => ({
+  isOpen: false,
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
+}));
+
 export function Revalidate(paths: string[]) {
   paths.map((path) => {
       revalidatePath(path);

@@ -9,7 +9,6 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { NotebookIcon } from "lucide-react";
 import Link from "next/link";
-import { json } from "stream/consumers";
 
 export default async function Learn() {
 
@@ -47,8 +46,8 @@ export default async function Learn() {
             {unit.lessons.map((lesson, index)=> {
               const isCurrent = lesson.id ===  userProgress?.activeCourseId;
               const heartsBool = (!!userProgress.hearts && userProgress.hearts > 0);
-              const isLocked = !isCurrent || !heartsBool; 
-              // const isLocked = !!lesson.completed && !isCurrent || !heartsBool; 
+              // const isLocked = !isCurrent || !heartsBool; 
+              const isLocked = !!lesson.completed && !isCurrent || !heartsBool; 
 
               return(<LessonButton key={index} 
                 id={lesson.id} 

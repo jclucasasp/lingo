@@ -115,16 +115,18 @@ export const getCourseProgress = cache(async () => {
 });
 
 export const getLesson = cache(async (id?: number) => {
-    console.log("Getting lesson: ", id);
+    console.info("Incoming search for lesson using getLesson() from queries...");
 
     const { userId } = auth();
     if (!userId) {
+        console.error("No user found...");
         return null;
     }
 
     const courseProgress = await getCourseProgress();
 
     if(!courseProgress || !courseProgress.activeLesson) {
+        console.error("No courseprogress...");
         return null;
     }
 
@@ -150,6 +152,7 @@ export const getLesson = cache(async (id?: number) => {
     }).catch((err) => console.error(err));
 
     if (!lessonData) {
+        console.error("Unable to find lesson...");
         return null;
     }
 

@@ -14,6 +14,7 @@ export default async function LessonPage() {
         redirect("/learn");
     }
 
+    console.log("\nLesson data from Lesson page: ", lesson);
     //Todo: Test if percentageData yields the same as the below calculation
     // const percentage = lesson.challenges!.filter((challenge) => challenge.completed).length / lesson.challenges!.length * 100;
 

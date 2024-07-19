@@ -18,11 +18,13 @@ export default async function LessonIdPage({params}: LessonIdPageProps) {
     const percentageData = getLessonPercentage();
 
     const [lesson, userProgress, percentage] = await Promise.all([lessonData, userProgressData, percentageData]);
-    console.log("\nLesson: ", lesson);
+    console.log("\nLesson from LessonIdPage: ", lesson);
 
     if (!lesson || !userProgress) {
         redirect("/learn");
     }
+
+    console.log("Lesson data from LessonIdPage: ", lesson);
 
     //Todo: Test if percentageData yields the same as the below calculation
     // const percentage = lesson.challenges!.filter((challenge) => challenge.completed).length / lesson.challenges.length * 100;

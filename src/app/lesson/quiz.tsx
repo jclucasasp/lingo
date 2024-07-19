@@ -3,7 +3,7 @@ import { useState, useTransition } from "react";
 import { challengeOptions, challenges, challengeProgress } from "@/../db/schema";
 import { X, InfinityIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { useExitModal, useHeartModal } from "@/lib/utils";
+import { useExitModal, useHeartModal, usePractiseModal } from "@/lib/utils";
 import { QuestionBubble } from "@/app/lesson/question-bubble";
 import { Challenge } from "@/app/lesson/challenge";
 import { LessonFooter } from "@/app/lesson/footer";
@@ -11,7 +11,7 @@ import { upsertChallengeProgress } from "@/../../actions/challenge-progress";
 import { reduceHearts } from "@/../../actions/user-progress";
 import { ResultCard } from "@/app/lesson/result-card";
 import { useRouter } from "next/navigation";
-import { useAudio } from "react-use";
+import { useAudio, useMount } from "react-use";
 import Confetti from "react-confetti";
 import { toast } from "sonner";
 import Image from "next/image";
@@ -48,8 +48,18 @@ export default function Quiz({
             lessonChallenges?.findIndex((challenge) => !challenge.completed) ?? 0
     );
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
+
+    
     const router = useRouter();
     const { onOpen: openHeartModal } = useHeartModal();
+    const { onOpen: onpenPractiseModal } = usePractiseModal();
+    
+    useMount(() => {
+        if (initialPercentage === 100) {
+            onpenPractiseModal();
+        }
+    });
+
     const challenge = lessonChallenges?.[activeChallengeIndex];
     const challengeOptions = challenge?.challengeOptions ?? [];
     const title = challenge?.type === "ASSIST" ? "Select the correct meaning" : challenge?.question;
@@ -108,9 +118,12 @@ export default function Quiz({
                             return;
                         }
 
-                        setStatus("incorrect");
                         incorrectControls.play();
-                        setHearts((prev) => Math.max(prev - 1, 0));
+                        setStatus("incorrect");
+
+                        if (!response?.error) {
+                            setHearts((prev) => Math.max(prev - 1, 0));
+                        }
                     })
                     .catch((err) => toast.error(err));
             });

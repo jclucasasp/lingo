@@ -6,6 +6,7 @@ import { Revalidate } from "@/lib/utils";
 import DBConn from "@/../db/drizzle";
 import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
+import { POINTS_TO_REFILL } from "@/lib/constants";
 
 export const upsertUserProgress = async (courseId: number) => {
     console.log("\nUpserting user progress for course: ", courseId);
@@ -79,7 +80,7 @@ export const reduceHearts = async (challengeId: number) => {
     }
 
     // Todo: handle subscription query here
-    if (!currentUserProgress.hearts) {
+    if (!currentUserProgress.hearts || currentUserProgress.hearts === 0) {
         return { error: "hearts" }
     }
 
@@ -90,4 +91,27 @@ export const reduceHearts = async (challengeId: number) => {
         .then(() => console.log("User hearts decreased"));
 
     Revalidate(["/learn", "/quests", "/shop", "/leaderboard", `/lesson/${challenge.lessonId}`]);
+}
+
+export const refillHearts = async ()=> {
+    const currentUserProgress = await getUserProgress();
+    if (!currentUserProgress) {
+        throw new Error("No user progress found");
+    }
+    
+    if (currentUserProgress.hearts === 5) {
+        throw new Error("User already has max hearts");
+    }
+
+    if (currentUserProgress.points < POINTS_TO_REFILL) {
+        throw new Error("Not enough points");
+    }
+
+    await DBConn().update(userProgress).set({
+        hearts: 5,
+        points: Math.max(currentUserProgress.points - POINTS_TO_REFILL, 0),
+    }).where(eq(userProgress.userId, currentUserProgress.userId))
+    .catch((err) => console.error("Unable to update users hearts: ", err.message))
+    .then(() => console.log("User hearts increased"))
+    .finally(() => Revalidate(["/learn", "/quests", "/shop", "/leaderboard", "/lesson"]));
 }

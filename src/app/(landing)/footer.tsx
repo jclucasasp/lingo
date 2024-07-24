@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 function Buttons() {
-  const falgs = [
+  const flags = [
     { src: '/hr.svg', country: 'croatian' },
     { src: '/fr.svg', country: 'france' },
     { src: '/it.svg', country: 'italy' },
@@ -11,7 +11,7 @@ function Buttons() {
 
   return (
     <>
-      {falgs.map((flag, i) => (
+      {flags.map((flag, i) => (
         <Button key={i} size={'lg'} variant={'ghost'}>
           <Image src={flag.src} height={32} width={32} alt={`${flag.country} flag`} className="mr-2 rounded-sm"/>
           {flag.country}

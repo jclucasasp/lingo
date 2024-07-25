@@ -36,3 +36,7 @@ export function Revalidate(paths: string[]) {
       revalidatePath(path);
   });
 }
+
+export function absoluteUrl(path: string): string {
+  return process.env.NEXT_PUBLIC_BASE_URL + path;
+}

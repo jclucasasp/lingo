@@ -1,8 +1,9 @@
-import { challengeProgress, courses, lessons, units, userProgress } from "@/../db/schema";
+import { challengeProgress, courses, lessons, units, userProgress, userSubscription } from "@/../db/schema";
 import { cache } from "react";
-import DBConn from "@/../db/drizzle";
+import { DAY_IN_MS } from "@/lib/constants";
 import { auth, } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
+import DBConn from "@/../db/drizzle";
 
 export const getCourses = cache(async () => {
     return await DBConn().query.courses.findMany();
@@ -183,4 +184,24 @@ export const getLessonPercentage = cache(async () => {
     }
 
     return Math.round((completedChallenges.length / lesson.challenges!.length) * 100);
+});
+
+export const getUserSubscription = cache(async () => {
+    const { userId } = auth();
+    if (!userId) {
+        return null;
+    }
+
+    const subscriptionData = await DBConn().query.userSubscription.findFirst({
+        where: eq(userSubscription.userId, userId),
+    }).catch((err) => console.error(err));
+    
+    if (!subscriptionData) {
+        return null;
+    }
+
+    const isActive = subscriptionData.stripePriceId && (subscriptionData.stripeCurrentPeriodEnd.getTime() + DAY_IN_MS) > Date.now();
+
+    return { ...subscriptionData, isActive };
+
 });

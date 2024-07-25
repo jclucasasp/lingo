@@ -1,6 +1,6 @@
 import StickyWrapper from "@/components/sticky-wrapper";
 import UserProgress from "@/components/user-progress";
-import { getUserProgress } from "@/../db/queries";
+import { getUserProgress, getUserSubscription } from "@/../db/queries";
 import { redirect } from "next/navigation";
 import FeedWrapper from "@/components/feed-wrapper";
 import Image from "next/image";
@@ -8,8 +8,9 @@ import Items from "./items";
 
 export default async function page() {
   const userProgressData = getUserProgress();
+  const userSubscriptionData = getUserSubscription();
 
-  const [userProgress] = await Promise.all([userProgressData]);
+  const [userProgress, userSubscription] = await Promise.all([userProgressData, userSubscriptionData]);
 
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
@@ -22,11 +23,11 @@ export default async function page() {
           <Image src="/shop.svg" height={90} width={90} alt="shop" />
           <h1 className="text-2xl font-bold text-neutral-800 my-6">Shop</h1>
           <p className="text-muted-foreground text-lg mb-6">Redeem your points for hearts</p>
-          <Items hearts={userProgress.hearts} points={userProgress.points} subscription={false} />
+          <Items hearts={userProgress.hearts} points={userProgress.points} subscription={userSubscription?.isActive || false} />
         </div>
       </FeedWrapper>
       <StickyWrapper>
-        <UserProgress activeCourse={userProgress.activeCourse} hasActiveSubscription={false}
+        <UserProgress activeCourse={userProgress.activeCourse} hasActiveSubscription={userSubscription?.isActive ||false}
           hearts={userProgress.hearts} points={userProgress.points} />
       </StickyWrapper>
     </div>

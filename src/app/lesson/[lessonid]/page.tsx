@@ -1,4 +1,4 @@
-import { getLesson, getUserProgress, getLessonPercentage } from '@/../db/queries'
+import { getLesson, getUserProgress, getLessonPercentage, getUserSubscription } from '@/../db/queries'
 import { redirect } from 'next/navigation';
 import Quiz from '@/app/lesson/quiz';
 import '@/app/lesson/layout';
@@ -16,8 +16,9 @@ export default async function LessonIdPage({params}: LessonIdPageProps) {
     const lessonData = getLesson((parseInt(params.lessonid)));
     const userProgressData = getUserProgress();
     const percentageData = getLessonPercentage();
+    const userSubscriptionData = getUserSubscription();
 
-    const [lesson, userProgress, percentage] = await Promise.all([lessonData, userProgressData, percentageData]);
+    const [lesson, userProgress, percentage, userSubscription] = await Promise.all([lessonData, userProgressData, percentageData, userSubscriptionData]);
     console.log("\nLesson from LessonIdPage: ", lesson);
 
     if (!lesson || !userProgress) {
@@ -35,7 +36,7 @@ export default async function LessonIdPage({params}: LessonIdPageProps) {
             lessonChallenges={lesson.challenges}
             initialHearts={userProgress.hearts}
             initialPercentage={percentage}
-            userSubscription={null} //Todo: add user subscription
+            userSubscription={userSubscription?.isActive || false} 
         />
     );
 }

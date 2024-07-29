@@ -1,6 +1,6 @@
 "use client"
 import { useState, useTransition } from "react";
-import { challengeOptions, challenges, challengeProgress } from "@/../db/schema";
+import { challengeOptions, challenges, challengeProgress, userSubscription } from "@/../db/schema";
 import { X, InfinityIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useExitModal, useHeartModal, usePractiseModal } from "@/lib/utils";
@@ -21,7 +21,7 @@ type QuizProps = {
     lessonId: number | undefined,
     initialHearts: number,
     initialPercentage: number,
-    userSubscription: any, //Todo: replace with subscription db type
+    userSubscription: boolean,
     lessonChallenges: (typeof challenges.$inferSelect & {
         completed: boolean;
         challengeOptions: typeof challengeOptions.$inferSelect[];
@@ -43,17 +43,16 @@ export default function Quiz({
     const [hearts, setHearts] = useState(initialHearts);
     const [percentage, setPercentage] = useState(initialPercentage);
     const [status, setStatus] = useState<"correct" | "incorrect" | "completed" | "none">("none");
-    const [activeChallengeIndex, setActiveChallengeIndex] = useState(
-        () =>
-            lessonChallenges?.findIndex((challenge) => !challenge.completed) ?? 0
+    const [activeChallengeIndex, setActiveChallengeIndex] = useState(() =>
+        lessonChallenges?.findIndex((challenge) => !challenge.completed) ?? 0
     );
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
-    
+
     const router = useRouter();
     const { onOpen: openHeartModal } = useHeartModal();
     const { onOpen: onpenPractiseModal } = usePractiseModal();
-    
+
     useMount(() => {
         if (initialPercentage === 100) {
             onpenPractiseModal();
@@ -65,13 +64,15 @@ export default function Quiz({
     const title = challenge?.type === "ASSIST" ? "Select the correct meaning" : challenge?.question;
 
     const handleSelect = (optionId: number) => {
+        if (status !== "none") return;
         setSelectedOption(optionId);
     };
 
     const { onOpen: openExitModal } = useExitModal();
 
     const handleContinue = () => {
-        if (!selectedOption || !challenge) return;
+        // if (!selectedOption || !challenge) return;
+        if (!selectedOption) return;
 
         if (status === "incorrect") {
             setStatus("none");
@@ -93,7 +94,7 @@ export default function Quiz({
 
         if (correctOption.id === selectedOption) {
             startTransition(() => {
-                upsertChallengeProgress(challenge.id)
+                upsertChallengeProgress(challenge!.id)
                     .then((res) => {
                         if (res?.error === "hearts") {
                             openHeartModal();
@@ -111,7 +112,7 @@ export default function Quiz({
             });
         } else {
             startTransition(() => {
-                reduceHearts(challenge.id)
+                reduceHearts(challenge!.id)
                     .then((response) => {
                         if (response?.error === "hearts") {
                             openHeartModal();

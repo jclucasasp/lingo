@@ -65,8 +65,8 @@ export default function Items({ hearts, points, subscription }: ItemsProps) {
                         Unlimited hearts
                     </p>
                 </div>
-                <Button onClick={handleSubscription} disabled={isPending || subscription}>
-                    {subscription ? "active" : "upgrade"}
+                <Button onClick={handleSubscription} disabled={isPending}>
+                    {subscription ? "settings" : "upgrade"}
                 </Button>
             </div>
         </ul>

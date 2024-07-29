@@ -30,7 +30,7 @@ export default function UserProgress({ activeCourse, points, hearts, hasActiveSu
             <Link href={"/shop"}>
             <Button variant={"ghost"} size={"sm"} className="text-rose-500">
                 <Image src={"/heart.svg"} height={40} width={40} alt="points" className="mr-2" />
-                {hasActiveSubscription? <InfinityIcon className="h-4 w-4 stroke-[3]" /> : hearts}
+                {hasActiveSubscription? <InfinityIcon className="h-4 w-4 stroke-[3] shrink-0" /> : hearts}
             </Button>
             </Link>
 

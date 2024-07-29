@@ -96,7 +96,7 @@ export const courses = pgTable("courses", {
   
   export const challengeProgress = pgTable("challenge_progress", {
     id: serial("id").primaryKey(),
-    userId: text("user_id").notNull(), // TODO: Confirm this doesn't break
+    userId: text("user_id").notNull(),
     challengeId: integer("challenge_id").references(() => challenges.id, { onDelete: "cascade" }).notNull(),
     completed: boolean("completed").notNull().default(false),
   });

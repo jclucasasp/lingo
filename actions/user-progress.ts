@@ -1,5 +1,5 @@
 "use server";
-import { getCourseById, getUserProgress } from "@/../db/queries";
+import { getCourseById, getUserProgress, getUserSubscription } from "@/../db/queries";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { challengeProgress, challenges, userProgress } from "@/../db/schema";
 import { Revalidate } from "@/lib/utils";
@@ -23,10 +23,9 @@ export const upsertUserProgress = async (courseId: number) => {
         throw new Error("Course not found");
     }
 
-    /*Todo: Enable once units and lessons are added */
-    // if(!course.units.length || !course.units[0].lessons.length) {
-    //     throw new Error("Course not found");
-    // }
+    if(!course.units.length || !course.units[0].lessons.length) {
+        throw new Error("Course not found");
+    }
 
     const existingProgress = await getUserProgress();
 
@@ -56,6 +55,8 @@ export const reduceHearts = async (challengeId: number) => {
     }
 
     const currentUserProgress = await getUserProgress();
+    const userSubscription = await getUserSubscription();
+
     if (!currentUserProgress) {
         throw new Error("No user progress found");
     }
@@ -75,12 +76,19 @@ export const reduceHearts = async (challengeId: number) => {
         ),
     }).catch((err) => console.error("Unable to find existingUserProgress: ", err.message));
 
-    if (existingUserProgress && existingUserProgress.completed) {
+    if (!!existingUserProgress) {
         return { message: "practise" }
     }
 
-    // Todo: handle subscription query here
-    if (!currentUserProgress.hearts || currentUserProgress.hearts === 0) {
+    if (!currentUserProgress) {
+        throw new Error("No user progress found");
+    }
+
+    if (userSubscription?.isActive) {
+        return { error: "subscription" };
+    }
+
+        if (!currentUserProgress.hearts || currentUserProgress.hearts === 0) {
         return { error: "hearts" }
     }
 
@@ -113,5 +121,6 @@ export const refillHearts = async ()=> {
     }).where(eq(userProgress.userId, currentUserProgress.userId))
     .catch((err) => console.error("Unable to update users hearts: ", err.message))
     .then(() => console.log("User hearts increased"))
-    .finally(() => Revalidate(["/learn", "/quests", "/shop", "/leaderboard", "/lesson"]));
+    
+    Revalidate(["/learn", "/quests", "/shop", "/leaderboard", "/lesson"]);
 }

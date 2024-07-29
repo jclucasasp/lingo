@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import { getUserProgress } from "@/../db/queries";
+import { getUserProgress, getUserSubscription } from "@/../db/queries";
 import { challengeProgress, challenges, userProgress } from "@/../db/schema";
 import { and, eq } from "drizzle-orm";
 import { Revalidate } from "@/lib/utils";
@@ -14,7 +14,7 @@ export async function upsertChallengeProgress(challengeId: number) {
     }
 
     const currentUserProgress = await getUserProgress();
-    // Todo: Handle subscription query here
+    const userSubscription = await getUserSubscription();
 
     if (!currentUserProgress) {
         throw new Error("No user progress found");
@@ -35,10 +35,10 @@ export async function upsertChallengeProgress(challengeId: number) {
         ),
     });
 
-    const isPractise = existingProgress?.completed || false;
+    const isPractise = !!existingProgress;
     console.log("isPractise: ", isPractise);
 
-    if (currentUserProgress.hearts == 0 && !isPractise) {
+    if (currentUserProgress.hearts == 0 && !isPractise && !userSubscription?.isActive) {
         return { error: "hearts" };
     }
 
@@ -56,7 +56,7 @@ export async function upsertChallengeProgress(challengeId: number) {
         ]).catch((err) => console.error(err))
         .finally(()=> console.log("Hearts increased and challenge set to completed"))
 
-        Revalidate(["/learn", "/lesson", "/courses", "/quests", "/leaderboard", `/lesson/${challenge.lessonId}`]);
+        Revalidate(["/learn", "/lesson", "/quests", "/leaderboard", `/lesson/${challenge.lessonId}`]);
         return;
     }
 

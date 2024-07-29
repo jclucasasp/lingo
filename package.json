@@ -13,7 +13,7 @@
     "db:push": "npx drizzle-kit push",
     "db:drop": "tsx ./scripts/drop-db.ts",
     "db:seed": "tsx ./scripts/seed-db.ts",
-    "stripe:listen": "npx stripe listen --forward-to localhost:3000/api/webhooks/stripe"
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.1.3",

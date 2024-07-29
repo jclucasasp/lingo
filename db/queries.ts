@@ -1,4 +1,4 @@
-import { challengeProgress, courses, lessons, units, userProgress, userSubscription } from "@/../db/schema";
+import { challengeProgress, challenges, courses, lessons, units, userProgress, userSubscription } from "@/../db/schema";
 import { cache } from "react";
 import { DAY_IN_MS } from "@/lib/constants";
 import { auth, } from "@clerk/nextjs/server";
@@ -12,6 +12,16 @@ export const getCourses = cache(async () => {
 export const getCourseById = (async (id: number) => {
     return await DBConn().query.courses.findFirst({
         where: eq(courses.id, id),
+        with: {
+            units: {
+                orderBy: (units, { asc }) => [asc(units.order)],
+                with: {
+                    lessons: {
+                        orderBy: (lessons, { asc }) => [asc(lessons.order)],
+                    }
+                }
+            }
+        }
     });
 });
 
@@ -39,11 +49,14 @@ export const getUnits = cache(async () => {
     }
 
     const unitsData = await DBConn().query.units.findMany({
+        orderBy: (units, { asc })=> [asc(units.order)],
         where: eq(units.courseId, userProgress.activeCourse!.id),
         with: {
             lessons: {
+                orderBy: (lessons, { asc })=> [asc(lessons.order)],
                 with: {
                     challenges: {
+                        orderBy: (challenges, { asc })=> [(asc(challenges.order))],
                         with: {
                             challengeProgress: {
                                 where: eq(challengeProgress.userId, userId),

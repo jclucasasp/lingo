@@ -4,7 +4,7 @@ import StickyWrapper from "@/components/sticky-wrapper";
 import UserProgress from "@/components/user-progress";
 import UnitHeader from "@/app/(main)/learn/unit-header";
 import LessonButton from "@/app/(main)/learn/lesson-button";
-import { getCourseProgress, getUnits, getUserProgress, getLessonPercentage } from "@/../db/queries";
+import { getCourseProgress, getUnits, getUserProgress, getLessonPercentage, getUserSubscription } from "@/../db/queries";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { NotebookIcon } from "lucide-react";
@@ -16,10 +16,11 @@ export default async function Learn() {
   const unitsData = getUnits();
   const courseProgressData = getCourseProgress();
   const lessonPercentageData = getLessonPercentage();
+  const userSubscriptionData = getUserSubscription();
 
-  const [userProgress, units, courseProgress, lessonPercentage] = await Promise.all([userProgressData, unitsData, courseProgressData, lessonPercentageData]);
+  const [userProgress, units, courseProgress, lessonPercentage, userSubscription] = await Promise.all([userProgressData, unitsData, courseProgressData, lessonPercentageData, userSubscriptionData]);
 
-  if (!userProgress || !userProgress.activeCourse) {
+  if (!userProgress || !userProgress.activeCourse || !courseProgress) {
     redirect("/courses");
   }
 
@@ -63,7 +64,7 @@ export default async function Learn() {
       </FeedWrapper>
 
       <StickyWrapper>
-        <UserProgress activeCourse={{ title: userProgress.activeCourse.title, imageSrc: userProgress.activeCourse.imageSrc }} hearts={userProgress.hearts} points={userProgress.points} hasActiveSubscription={false} />
+        <UserProgress activeCourse={{ title: userProgress.activeCourse.title, imageSrc: userProgress.activeCourse.imageSrc }} hearts={userProgress.hearts} points={userProgress.points} hasActiveSubscription={userSubscription?.isActive || false} />
       </StickyWrapper>
 
     </div>

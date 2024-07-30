@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import FeedWrapper from "@/components/feed-wrapper";
 import Image from "next/image";
 import Items from "./items";
+import QuestItems from "@/components/ui/quest-items";
 
 export default async function page() {
   const userProgressData = getUserProgress();
@@ -29,6 +30,7 @@ export default async function page() {
       <StickyWrapper>
         <UserProgress activeCourse={userProgress.activeCourse} hasActiveSubscription={userSubscription?.isActive ||false}
           hearts={userProgress.hearts} points={userProgress.points} />
+          <QuestItems points={userProgress.points}/>
       </StickyWrapper>
     </div>
   );

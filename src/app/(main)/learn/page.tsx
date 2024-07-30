@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import Promo from "@/components/promo";
 import { NotebookIcon } from "lucide-react";
 import Link from "next/link";
+import QuestItems from "@/components/ui/quest-items";
 
 export default async function Learn() {
 
@@ -69,6 +70,7 @@ export default async function Learn() {
         {!userSubscription?.isActive &&
           <Promo />
         }
+        <QuestItems points={userProgress.points} />
       </StickyWrapper>
 
     </div>

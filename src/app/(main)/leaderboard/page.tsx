@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Promo from "@/components/promo";
+import QuestItems from "@/components/ui/quest-items";
 
 export default async function page() {
     const userProgressData = getUserProgress();
@@ -49,6 +50,7 @@ export default async function page() {
                 {!userSubscription?.isActive &&
                     <Promo />
                 }
+                <QuestItems points={userProgress.points} />
             </StickyWrapper>
         </div>
     );

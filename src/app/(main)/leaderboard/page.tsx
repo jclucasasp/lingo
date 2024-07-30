@@ -6,6 +6,7 @@ import FeedWrapper from "@/components/feed-wrapper";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import Promo from "@/components/promo";
 
 export default async function page() {
     const userProgressData = getUserProgress();
@@ -19,7 +20,7 @@ export default async function page() {
     }
 
     return (
-        <div className="flex gap-[48px] px-8">
+        <div className="flex gap-[48px] p-4">
             <FeedWrapper>
                 <div className="w-full flex flex-col items-center">
                     <Image src="/leaderboard.svg" height={90} width={90} alt="leaderboard" />
@@ -45,6 +46,9 @@ export default async function page() {
             </FeedWrapper>
             <StickyWrapper>
                 <UserProgress activeCourse={{ title: userProgress.activeCourse.title, imageSrc: userProgress.activeCourse.imageSrc }} hearts={userProgress.hearts} points={userProgress.points} hasActiveSubscription={userSubscription?.isActive || false} />
+                {!userSubscription?.isActive &&
+                    <Promo />
+                }
             </StickyWrapper>
         </div>
     );

@@ -17,7 +17,7 @@ export default async function page() {
   }
 
   return (
-    <div className="flex gap-[48px] px-8">
+    <div className="flex gap-[48px] p-4">
       <FeedWrapper>
         <div className="w-full flex flex-col items-center">
           <Image src="/shop.svg" height={90} width={90} alt="shop" />

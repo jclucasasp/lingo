@@ -7,6 +7,7 @@ import LessonButton from "@/app/(main)/learn/lesson-button";
 import { getCourseProgress, getUnits, getUserProgress, getLessonPercentage, getUserSubscription } from "@/../db/queries";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Promo from "@/components/promo";
 import { NotebookIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -44,27 +45,30 @@ export default async function Learn() {
 
             </div>
             <div className="flex flex-col items-center gap-4 relative">
-            {unit.lessons.map((lesson, index)=> {
-              const isCurrent = lesson.id ===  userProgress?.activeCourseId;
-              const heartsBool = (!!userProgress.hearts && userProgress.hearts > 0);
-              // const isLocked = !isCurrent || !heartsBool; 
-              const isLocked = !!lesson.completed && !isCurrent || !heartsBool; 
+              {unit.lessons.map((lesson, index) => {
+                const isCurrent = lesson.id === userProgress?.activeCourseId;
+                const heartsBool = (!!userProgress.hearts && userProgress.hearts > 0);
+                // const isLocked = !isCurrent || !heartsBool; 
+                const isLocked = !!lesson.completed && !isCurrent || !heartsBool;
 
-              return(<LessonButton key={index} 
-                id={lesson.id} 
-                index={index} 
-                totalCount={unit.lessons.length - 1} 
-                locked={isLocked} 
-                current={isCurrent} 
-                percentage={lessonPercentage} />)
-            })}
+                return (<LessonButton key={index}
+                  id={lesson.id}
+                  index={index}
+                  totalCount={unit.lessons.length - 1}
+                  locked={isLocked}
+                  current={isCurrent}
+                  percentage={lessonPercentage} />)
+              })}
             </div>
           </div>
         ))}
       </FeedWrapper>
 
       <StickyWrapper>
-        <UserProgress activeCourse={{ title: userProgress.activeCourse.title, imageSrc: userProgress.activeCourse.imageSrc }} hearts={userProgress.hearts} points={userProgress.points} hasActiveSubscription={userSubscription?.isActive || false} />
+        <UserProgress activeCourse={userProgress.activeCourse} hearts={userProgress.hearts} points={userProgress.points} hasActiveSubscription={userSubscription?.isActive || false} />
+        {!userSubscription?.isActive &&
+          <Promo />
+        }
       </StickyWrapper>
 
     </div>

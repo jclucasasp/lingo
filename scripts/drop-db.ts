@@ -20,6 +20,8 @@ async function dropTables() {
 
     await DConn().execute(sql`DROP TABLE IF EXISTS ${challengeProgress} CASCADE`).catch((e) => console.error("Unable to delete userProgress: ", e.message));
 
+    await DConn().execute(sql`DROP TABLE IF EXISTS ${userProgress} CASCADE`).catch((e) => console.error("Unable to delete userProgress: ", e.message));
+
     console.log("Tables dropped");
 }
 

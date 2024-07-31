@@ -2,6 +2,8 @@ import { type ClassValue, clsx } from "clsx"
 import { revalidatePath } from "next/cache";
 import { twMerge } from "tailwind-merge"
 import { create } from "zustand";
+import { Roles } from "../../types/globals";
+import { auth } from "@clerk/nextjs/server";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -39,4 +41,9 @@ export function Revalidate(paths: string[]) {
 
 export function absoluteUrl(path: string): string {
   return process.env.NEXT_PUBLIC_BASE_URL + path;
+}
+
+export function checkRole(role: Roles) {
+  const { sessionClaims } = auth();
+  return sessionClaims?.metadata?.role === role;
 }

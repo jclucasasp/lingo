@@ -35,6 +35,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 - [Neon Postgress Db](https://neon.tech)
 - [Drizzle ORM for Postgress](https://orm.drizzle.team/docs/get-started-postgresql)
 - [ReactUse for functional components](https://www.reactuse.com/)
+- [React Admin](https://marmelab.com/react-admin/documentation.html)
 
 ## Resources
 - [Github](https://github.com/AntonioErdeljac/lingo-early-access/blob/master/)

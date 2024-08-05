@@ -5,6 +5,7 @@ import simpleRestProvider from "ra-data-simple-rest";
 import CourseList from "@/app/admin/course/course-list";
 import CreateCourse from "@/app/admin/course/course-create";
 import EditCourse from "@/app/admin/course/course-edit";
+import UnitList from "@/app/admin/units/unit-list";
 
 
 export default function ReactAdmin() {
@@ -18,6 +19,9 @@ export default function ReactAdmin() {
         recordRepresentation={record => record.title}  
         create={CreateCourse}
         edit={EditCourse}
+        />
+        <Resource name="units" list={UnitList} 
+        recordRepresentation={record => record.title} 
         />
     </Admin>
   );

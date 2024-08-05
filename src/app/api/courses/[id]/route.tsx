@@ -4,10 +4,39 @@ import DConn from "@/../../db/drizzle";
 import { courses } from "@/../../db/schema";
 import { eq } from "drizzle-orm";
 
-export async function DELETE(req: NextRequest) {
+export async function GET(req: NextRequest, { params }: { params: { id: number } }) {
+    
+    const id = params.id;
+    // const { pathname } = new URL(req.url);
+    // const id = pathname.split("/").pop();
 
-    const { pathname } = new URL(req.url);
-    const id = pathname.split("/").pop();
+    const res = await DConn().select({ id: courses.id }).from(courses).catch((err) => {
+        console.error(err);
+        return NextResponse.json({ erro: "Error fetching course" }, { status: 500 });
+    })
+
+    return NextResponse.json({res, id}, { status: 200 });
+}
+
+export async function PUT(req: NextRequest, { params }: { params: { id: number } }) {
+
+    const id = params.id;
+    const body = await req.json();
+
+    const res = DConn().update(courses).set(body).where(eq(courses.id, id)).returning()
+        .catch((err) => {
+            console.error(err);
+            return NextResponse.json({ error: "Error updating course" }, { status: 500 });
+        });
+
+    return NextResponse.json({res, id}, { status: 200 });
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: number } }) {
+
+    const id = params.id;
+    // const { pathname } = new URL(req.url);
+    // const id = pathname.split("/").pop();
 
     if (!checkRole("admin")) {
         return NextResponse.json({ error: "Not authorized" }, { status: 401 });

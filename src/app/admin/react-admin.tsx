@@ -1,8 +1,10 @@
 "use client";
-import { Admin, ListGuesser, Resource } from "react-admin";
+import { Admin, Resource } from "react-admin";
 import simpleRestProvider from "ra-data-simple-rest";
+// import jsonServerProvider from "ra-data-simple-rest";
 import CourseList from "@/app/admin/course/course-list";
 import CreateCourse from "@/app/admin/course/course-create";
+import EditCourse from "@/app/admin/course/course-edit";
 
 
 export default function ReactAdmin() {
@@ -12,7 +14,11 @@ export default function ReactAdmin() {
 
   return (
     <Admin dataProvider={dataProvider}>
-        <Resource name="courses" list={CourseList} recordRepresentation={record => record.title}  create={CreateCourse}/>
+        <Resource name="courses" list={CourseList} 
+        recordRepresentation={record => record.title}  
+        create={CreateCourse}
+        edit={EditCourse}
+        />
     </Admin>
   );
 }

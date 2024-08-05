@@ -28,6 +28,7 @@ interface CoursePostBody {
     title: string;
     imageSrc: string;
 }
+
 export async function POST(req: NextRequest) {
     if (!checkRole("admin")) {
         return NextResponse.json({ error: "Not authorized" }, { status: 401 });
@@ -46,5 +47,6 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Error creating course" }, { status: 500 });
         });
 
-    return NextResponse.json(res, { status: 200 });
+
+    return NextResponse.json({...res, id: body.id }, { status: 200 });
 }

@@ -6,6 +6,8 @@ import CourseList from "@/app/admin/course/course-list";
 import CreateCourse from "@/app/admin/course/course-create";
 import EditCourse from "@/app/admin/course/course-edit";
 import UnitList from "@/app/admin/units/unit-list";
+import EditUnit from "@/app/admin/units/unit-edit";
+import CreateUnit from "@/app/admin/units/unit-create";
 
 
 export default function ReactAdmin() {
@@ -22,6 +24,8 @@ export default function ReactAdmin() {
         />
         <Resource name="units" list={UnitList} 
         recordRepresentation={record => record.title} 
+        create={CreateUnit}
+        edit={EditUnit}
         />
     </Admin>
   );

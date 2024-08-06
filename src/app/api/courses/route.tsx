@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { CoursePostBodyInterface } from "@/app/api/interfaces/interface";
 import { courses } from "@/../../db/schema";
 import { checkRole } from "@/lib/utils";
 import { count } from "drizzle-orm";
@@ -21,12 +22,6 @@ export async function GET() {
         });
 
     return NextResponse.json(res, { status: 200, headers });
-}
-
-interface CoursePostBodyInterface {
-    id: number,
-    title: string;
-    imageSrc: string;
 }
 
 export async function POST(req: NextRequest) {

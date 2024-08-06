@@ -9,7 +9,7 @@ export default function UnitList() {
                 <TextField source="title" />
                 <TextField source="description" />
                 <ReferenceField source="courseId" reference="courses" />
-                <TextField source="courseId" />
+                <TextField source="courseId" label="Course ID"/>
             </Datagrid>
         </List>
     );

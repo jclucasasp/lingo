@@ -9,8 +9,8 @@ export default function EditUnit() {
         <TextInput id="id" validate={[required()]} source="id" disabled />
         <TextInput source="title" validate={[required()]} aria-required label="Title" />
         <TextInput source="description" validate={[required()]} aria-required label="Description" />
-        <ReferenceField source="courseId" reference="courses" />
-        <TextInput source="courseId" />
+        <ReferenceField source="courseId" reference="courses" label="Course"/>
+        <TextInput source="courseId" label="Course ID"/>
       </SimpleForm>
     </Edit>
   );

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { UnitPostBodyInterface } from "@/app/api/interfaces/interface";
 import { checkRole } from "@/lib/utils";
 import { units } from "@/../../db/schema";
 import DConn from "@/../../db/drizzle";
@@ -25,13 +26,6 @@ export async function GET() {
     return NextResponse.json(res, { status: 200, headers });
 }
 
-export interface UnitPostBodyInterface {
-    id: number;
-    title: string;
-    description: string;
-    courseId: number;
-    order: number;
-}
 export async function POST(req: NextRequest) {
     if (!checkRole("admin")) {
         return NextResponse.json({ error: "Not authorized" }, { status: 401 });

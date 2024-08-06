@@ -8,6 +8,9 @@ import EditCourse from "@/app/admin/course/course-edit";
 import UnitList from "@/app/admin/units/unit-list";
 import EditUnit from "@/app/admin/units/unit-edit";
 import CreateUnit from "@/app/admin/units/unit-create";
+import LessonList from "@/app/admin/lessons/lesson-list";
+import CreateLesson from "@/app/admin/lessons/lesson-create";
+import EditLesson from "@/app/admin/lessons/lesson-edit";
 
 
 export default function ReactAdmin() {
@@ -17,16 +20,21 @@ export default function ReactAdmin() {
 
   return (
     <Admin dataProvider={dataProvider}>
-        <Resource name="courses" list={CourseList} 
-        recordRepresentation={record => record.title}  
+      <Resource name="courses" list={CourseList}
+        recordRepresentation={record => record.title}
         create={CreateCourse}
         edit={EditCourse}
-        />
-        <Resource name="units" list={UnitList} 
-        recordRepresentation={record => record.title} 
+      />
+      <Resource name="units" list={UnitList}
+        recordRepresentation={record => record.title}
         create={CreateUnit}
         edit={EditUnit}
-        />
+      />
+      <Resource name="lessons" list={LessonList}
+      recordRepresentation={record => record.title}
+      create={CreateLesson}
+      edit={EditLesson}
+      />
     </Admin>
   );
 }

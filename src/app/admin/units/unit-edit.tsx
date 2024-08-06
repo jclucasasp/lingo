@@ -4,7 +4,7 @@ import { Edit, ReferenceField, required, SimpleForm, TextInput } from "react-adm
 
 export default function EditUnit() {
   return (
-    <Edit>
+    <Edit redirect="list">
       <SimpleForm>
         <TextInput id="id" validate={[required()]} source="id" disabled />
         <TextInput source="title" validate={[required()]} aria-required label="Title" />

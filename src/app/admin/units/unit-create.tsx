@@ -3,7 +3,7 @@ import { Create, ReferenceField, required, SimpleForm, TextInput } from "react-a
 
 export default function CreateUnit() {
   return (
-    <Create>
+    <Create redirect="list">
         <SimpleForm>
             <TextInput validate={[required()]} source="title" aria-required label="Title"/>
             <TextInput validate={[required()]} source="description" aria-required label="Description"/>
